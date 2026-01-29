@@ -1,6 +1,18 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --text-primary: #171717;
+  --text-secondary: #6c6c6c;
+
+  --rarity-common: hsla(120, 1%, 45%, 1);
+  --rarity-uncommon: hsla(134, 81%, 59%, 1);
+  --rarity-rare: hsla(193, 97%, 55%, 1);
+  --rarity-epic: hsla(321, 69%, 50%, 1);
+  --rarity-legendary: hsla(48, 100%, 49%, 1);
+
+  --surface: hsla(40, 26%, 93%, 1);
+  --surface-footer: #d9cfbf;
 }
 
 @media (prefers-color-scheme: dark) {

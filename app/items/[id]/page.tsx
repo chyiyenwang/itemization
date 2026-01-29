@@ -1,0 +1,34 @@
+import { getItem } from "@/app/actions";
+import Card from "@/app/components/card";
+import { notFound } from "next/navigation";
+
+interface ItemPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ItemPage({ params }: ItemPageProps) {
+  const { id } = params;
+  const item = await getItem(id);
+
+  if (!item) return notFound();
+  
+  console.log(item);
+
+  return (
+    <div>
+      <Card
+        name={item.name}
+        description={item.description}
+        icon={item.icon}
+        rarity={item.rarity}
+        type={item.itemType}
+        area={item.lootArea}
+        value={item.value}
+        weight={item.statBlock.weight}
+        stackSize={item.statBlock.stackSize}
+      />
+    </div>
+  )
+};
