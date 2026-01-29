@@ -1,25 +1,20 @@
-import styles from './card.module.css';
-import Image from 'next/image';
-import RaiderCoin from '@/public/raider-coin.webp';
-
+import styles from "./card.module.css";
+import Image from "next/image";
+import RaiderCoin from "@/public/raider-coin.webp";
 
 interface BadgeProps {
   label: string;
   rarity: string;
 }
 
-const Badge = ({
-  label,
-  rarity
-}: BadgeProps) =>
-  (
-    <div
-      className={styles.badge}
-      style={{ backgroundColor: `var(--rarity-${rarity?.toLowerCase()})` }}>
-        {label}
-    </div>
-  );
-
+const Badge = ({ label, rarity }: BadgeProps) => (
+  <div
+    className={styles.badge}
+    style={{ backgroundColor: `var(--rarity-${rarity?.toLowerCase()})` }}
+  >
+    {label}
+  </div>
+);
 
 interface CardProps {
   name: string;
@@ -31,7 +26,7 @@ interface CardProps {
   value: number;
   weight: number;
   stackSize: number;
-};
+}
 
 export default function Card({
   name,
@@ -44,10 +39,12 @@ export default function Card({
   weight,
   stackSize,
 }: CardProps) {
-
   return (
     <div className={styles.card}>
-      <div className={styles.header} style={{ backgroundColor: `var(--rarity-${rarity?.toLowerCase()})` }}>
+      <div
+        className={styles.header}
+        style={{ backgroundColor: `var(--rarity-${rarity?.toLowerCase()})` }}
+      >
         {/* <img src={icon} alt={name} className={styles.icon} /> */}
       </div>
 
@@ -63,16 +60,12 @@ export default function Card({
       </div>
 
       <div className={styles.footer}>
+        <div className={styles.stat}>{weight} kg</div>
         <div className={styles.stat}>
-          {weight} kg
-        </div>
-        <div className={styles.stat}>
-          <Image src={RaiderCoin} alt="raider coin" width={16} height={16}/>
-          <span>
-            {value}
-          </span>
+          <Image src={RaiderCoin} alt="raider coin" width={16} height={16} />
+          <span>{value}</span>
         </div>
       </div>
     </div>
-  )
-};
+  );
+}

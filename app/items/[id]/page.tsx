@@ -13,7 +13,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
   const item = await getItem(id);
 
   if (!item) return notFound();
-  
+
   console.log(item);
 
   return (
@@ -30,5 +30,5 @@ export default async function ItemPage({ params }: ItemPageProps) {
         stackSize={item.statBlock.stackSize}
       />
     </div>
-  )
-};
+  );
+}

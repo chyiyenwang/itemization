@@ -1,0 +1,99 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "declaration-empty-line-before": null,
+    "order/properties-order": [
+      [
+        {
+          "groupName": "Position",
+          "properties": [
+            "position",
+            "top",
+            "right",
+            "bottom",
+            "left",
+            "z-index"
+          ],
+          "emptyLineBefore": "always"
+        },
+        {
+          "groupName": "Box Model",
+          "properties": [
+            "display",
+            "flex",
+            "flex-direction",
+            "flex-wrap",
+            "justify-content",
+            "align-items",
+            "align-self",
+            "align-content",
+            "order",
+            "width",
+            "height",
+            "max-width",
+            "max-height",
+            "min-width",
+            "min-height",
+            "margin",
+            "padding",
+            "box-sizing",
+            "overflow",
+            "overflow-x",
+            "overflow-y"
+          ],
+          "emptyLineBefore": "always"
+        },
+        {
+          "groupName": "Typography",
+          "properties": [
+            "font",
+            "font-family",
+            "font-size",
+            "font-weight",
+            "line-height",
+            "letter-spacing",
+            "text-align",
+            "text-decoration",
+            "text-transform",
+            "color"
+          ],
+          "emptyLineBefore": "always"
+        },
+        {
+          "groupName": "Visual",
+          "properties": [
+            "background",
+            "background-color",
+            "background-image",
+            "background-position",
+            "background-size",
+            "background-repeat",
+            "border",
+            "border-radius",
+            "box-shadow",
+            "opacity"
+          ],
+          "emptyLineBefore": "always"
+        },
+        {
+          "groupName": "Misc",
+          "properties": [
+            "visibility",
+            "overflow",
+            "box-shadow",
+            "transition",
+            "transform",
+            "animation",
+            "cursor",
+            "pointer-events"
+          ],
+          "emptyLineBefore": "always"
+        }
+      ],
+      {
+        "unspecified": "bottomAlphabetical"
+      }
+    ]
+  }
+}
