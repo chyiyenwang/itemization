@@ -1,49 +1,11 @@
 import * as z from "zod";
+import { RawItemSchema } from "@/app/lib/items/item.schema";
 
 import { result } from "@/app/data";
-import { RarityType } from "@/app/types"
-
-const RawItemSchema = z
-  .object({
-    id: z.string(),
-    name: z.string(),
-    description: z.string(),
-    loot_area: z.string(),
-    rarity: z.enum(["Common", "Uncommon", "rare", "Epic", "Legendary"]),
-    icon: z.string(),
-    item_type: z.string(),
-    value: z.number(),
-    stat_block: z.object({
-      weight: z.number(),
-      stackSize: z.number(),
-    }),
-  })
-  .transform((raw) => ({
-    id: raw.id,
-    name: raw.name,
-    description: raw.description,
-    lootArea: raw.loot_area,
-    rarity: raw.rarity.toLowerCase() as RarityType,
-    icon: raw.icon,
-    itemType: raw.item_type,
-    value: raw.value,
-    statBlock: {
-      weight: raw.stat_block.weight,
-      stackSize: raw.stat_block.stackSize,
-    },
-  }));
 
 export async function getItem(id: string) {
-  // const data = await fetch(`https://metaforge.app/api/arc-raiders/items?id=${id}&includeComponents=true`, {
-  //   cache: 'force-cache',
-  //   next: {
-  //     revalidate: 60 * 60, // 1 hour
-  //   },
-  // });
-  // return await data.json();
   try {
-    const raw = RawItemSchema.parse(result.data[0]);
-    console.log(raw);
+    const raw = RawItemSchema.parse(result.data.find((item) => item.id === id));
     return raw;
   } catch (err) {
     if (err instanceof z.ZodError) {

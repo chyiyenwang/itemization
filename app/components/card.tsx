@@ -1,7 +1,7 @@
 import styles from "./card.module.css";
 import Image from "next/image";
 import RaiderCoin from "@/public/raider-coin.webp";
-import { RarityType } from "@/app/types"
+import { RarityType } from "@/app/types";
 
 interface BadgeProps {
   label: string;
@@ -16,7 +16,6 @@ const Badge = ({ label, rarity }: BadgeProps) => (
     {label}
   </div>
 );
-
 
 interface CardProps {
   name: string;

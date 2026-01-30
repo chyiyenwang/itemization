@@ -1,1 +1,1 @@
-export type RarityType = "common" | "uncommon" | "rare" | "epic" | "legendary";
+export * from "./rarity";

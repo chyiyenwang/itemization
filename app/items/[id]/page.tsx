@@ -9,7 +9,7 @@ interface ItemPageProps {
 }
 
 export default async function ItemPage({ params }: ItemPageProps) {
-  const { id } = params;
+  const { id } = await params;
   const item = await getItem(id);
 
   if (!item) return notFound();
