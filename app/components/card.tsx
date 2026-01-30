@@ -1,6 +1,7 @@
 import styles from "./card.module.css";
 import Image from "next/image";
 import RaiderCoin from "@/public/raider-coin.webp";
+import { RarityType } from "@/app/types"
 
 interface BadgeProps {
   label: string;
@@ -10,17 +11,18 @@ interface BadgeProps {
 const Badge = ({ label, rarity }: BadgeProps) => (
   <div
     className={styles.badge}
-    style={{ backgroundColor: `var(--rarity-${rarity?.toLowerCase()})` }}
+    style={{ backgroundColor: `var(--rarity-${rarity})` }}
   >
     {label}
   </div>
 );
 
+
 interface CardProps {
   name: string;
   description: string;
   icon: string;
-  rarity: string;
+  rarity: RarityType;
   type: string;
   area: string;
   value: number;
@@ -43,7 +45,7 @@ export default function Card({
     <div className={styles.card}>
       <div
         className={styles.header}
-        style={{ backgroundColor: `var(--rarity-${rarity?.toLowerCase()})` }}
+        style={{ backgroundColor: `var(--rarity-${rarity})` }}
       >
         {/* <img src={icon} alt={name} className={styles.icon} /> */}
       </div>

@@ -1,6 +1,7 @@
 import * as z from "zod";
 
 import { result } from "@/app/data";
+import { RarityType } from "@/app/types"
 
 const RawItemSchema = z
   .object({
@@ -22,7 +23,7 @@ const RawItemSchema = z
     name: raw.name,
     description: raw.description,
     lootArea: raw.loot_area,
-    rarity: raw.rarity.toLowerCase(),
+    rarity: raw.rarity.toLowerCase() as RarityType,
     icon: raw.icon,
     itemType: raw.item_type,
     value: raw.value,
