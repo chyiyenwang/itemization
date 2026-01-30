@@ -1,4 +1,4 @@
-import { getItem } from "@/app/actions";
+import { getItem } from "@/app/lib/items/item.service";
 import Card from "@/app/components/card";
 import { notFound } from "next/navigation";
 
@@ -13,8 +13,6 @@ export default async function ItemPage({ params }: ItemPageProps) {
   const item = await getItem(id);
 
   if (!item) return notFound();
-
-  console.log(item);
 
   return (
     <div>

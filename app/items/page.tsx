@@ -6,7 +6,7 @@ export default async function ItemsPage() {
     },
   );
   const items = await data.json();
-  console.log(items);
+
   return (
     <div>
       <h1>Items</h1>
