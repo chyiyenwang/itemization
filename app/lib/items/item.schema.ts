@@ -8,7 +8,7 @@ export const ItemSchema = z
     id: z.string(),
     name: z.string(),
     description: z.string(),
-    loot_area: z.string(),
+    loot_area: z.string().nullable(),
     rarity: z
       .enum(["Common", "Uncommon", "Rare", "Epic", "Legendary"])
       .transform((rarity) => rarity.toLowerCase() as RarityType),
@@ -19,6 +19,9 @@ export const ItemSchema = z
       weight: z.number(),
       stackSize: z.number(),
     }),
+    recycle_components: z.array(z.object({})),
+    recycle_from: z.array(z.object({})),
+    used_in: z.array(z.object({})),
   })
   .transform(
     (raw) =>
@@ -37,3 +40,12 @@ export const ItemSchema = z
         },
       }) satisfies Item,
   );
+
+// {
+//   "id": "metal-parts",
+//   "icon": "https://cdn.metaforge.app/arc-raiders/icons/metal-parts.webp",
+//   "name": "Metal Parts",
+//   "rarity": "Common",
+//   "item_type": "Basic Material",
+//   "description": "Used to craft a wide range of items."
+// }

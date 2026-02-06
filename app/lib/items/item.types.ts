@@ -4,7 +4,7 @@ export interface Item {
   id: string;
   name: string;
   description: string;
-  lootArea: string;
+  lootArea: string | null;
   rarity: RarityType;
   icon: string;
   itemType: string;
