@@ -3,6 +3,17 @@ import { z } from "zod";
 import { Item } from "@/app/lib/items/item.types";
 import { RarityType } from "@/app/types";
 
+const ComponentSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  icon: z.string(),
+  rarity: z
+    .enum(["Common", "Uncommon", "Rare", "Epic", "Legendary"])
+    .transform((rarity) => rarity.toLowerCase() as RarityType),
+  item_type: z.string(),
+  description: z.string(),
+});
+
 export const ItemSchema = z
   .object({
     id: z.string(),
@@ -19,9 +30,9 @@ export const ItemSchema = z
       weight: z.number(),
       stackSize: z.number(),
     }),
-    recycle_components: z.array(z.object({})),
-    recycle_from: z.array(z.object({})),
-    used_in: z.array(z.object({})),
+    recycle_components: z.array(ComponentSchema).optional(),
+    recycle_from: z.array(ComponentSchema).optional(),
+    used_in: z.array(ComponentSchema).optional(),
   })
   .transform(
     (raw) =>
@@ -38,14 +49,29 @@ export const ItemSchema = z
           weight: raw.stat_block.weight,
           stackSize: raw.stat_block.stackSize,
         },
+        recycleComponents: raw.recycle_components?.map((component) => ({
+          id: component.id,
+          name: component.name,
+          icon: component.icon,
+          rarity: component.rarity,
+          itemType: component.item_type,
+          description: component.description,
+        })),
+        recycleFrom: raw.recycle_from?.map((component) => ({
+          id: component.id,
+          name: component.name,
+          icon: component.icon,
+          rarity: component.rarity,
+          itemType: component.item_type,
+          description: component.description,
+        })),
+        usedIn: raw.used_in?.map((component) => ({
+          id: component.id,
+          name: component.name,
+          icon: component.icon,
+          rarity: component.rarity,
+          itemType: component.item_type,
+          description: component.description,
+        })),
       }) satisfies Item,
   );
-
-// {
-//   "id": "metal-parts",
-//   "icon": "https://cdn.metaforge.app/arc-raiders/icons/metal-parts.webp",
-//   "name": "Metal Parts",
-//   "rarity": "Common",
-//   "item_type": "Basic Material",
-//   "description": "Used to craft a wide range of items."
-// }
