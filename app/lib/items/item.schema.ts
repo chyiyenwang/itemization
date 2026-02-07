@@ -3,12 +3,14 @@ import { z } from "zod";
 import { Item } from "@/app/lib/items/item.types";
 import { RarityType } from "@/app/types";
 
+const CapitalizedRarity = ["Common", "Uncommon", "Rare", "Epic", "Legendary"];
+
 const ComponentSchema = z.object({
   id: z.string(),
   name: z.string(),
   icon: z.string(),
   rarity: z
-    .enum(["Common", "Uncommon", "Rare", "Epic", "Legendary"])
+    .enum(CapitalizedRarity)
     .transform((rarity) => rarity.toLowerCase() as RarityType),
   item_type: z.string(),
   description: z.string(),
@@ -21,7 +23,7 @@ export const ItemSchema = z
     description: z.string(),
     loot_area: z.string().nullable(),
     rarity: z
-      .enum(["Common", "Uncommon", "Rare", "Epic", "Legendary"])
+      .enum(CapitalizedRarity)
       .transform((rarity) => rarity.toLowerCase() as RarityType),
     icon: z.string(),
     item_type: z.string(),
