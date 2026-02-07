@@ -5,7 +5,7 @@ import { RarityType } from "@/app/types";
 
 const CapitalizedRarity = ["Common", "Uncommon", "Rare", "Epic", "Legendary"];
 
-const ComponentSchema = z.object({
+const ChildBaseItemSchema = z.object({
   id: z.string(),
   name: z.string(),
   icon: z.string(),
@@ -16,7 +16,15 @@ const ComponentSchema = z.object({
   description: z.string(),
 });
 
-export const ItemSchema = z
+const ChildItemSchema = z.object({
+  item: ChildBaseItemSchema,
+});
+
+const ComponentItemSchema = z.object({
+  component: ChildBaseItemSchema,
+});
+
+export const BaseItemSchema = z
   .object({
     id: z.string(),
     name: z.string(),
@@ -32,9 +40,9 @@ export const ItemSchema = z
       weight: z.number(),
       stackSize: z.number(),
     }),
-    recycle_components: z.array(ComponentSchema).optional(),
-    recycle_from: z.array(ComponentSchema).optional(),
-    used_in: z.array(ComponentSchema).optional(),
+    recycle_components: z.array(ComponentItemSchema).optional(),
+    recycle_from: z.array(ChildItemSchema).optional(),
+    used_in: z.array(ChildItemSchema).optional(),
   })
   .transform(
     (raw) =>
@@ -52,28 +60,28 @@ export const ItemSchema = z
           stackSize: raw.stat_block.stackSize,
         },
         recycleComponents: raw.recycle_components?.map((component) => ({
-          id: component.id,
-          name: component.name,
-          icon: component.icon,
-          rarity: component.rarity,
-          itemType: component.item_type,
-          description: component.description,
+          id: component.component.id,
+          name: component.component.name,
+          icon: component.component.icon,
+          rarity: component.component.rarity,
+          itemType: component.component.item_type,
+          description: component.component.description,
         })),
         recycleFrom: raw.recycle_from?.map((component) => ({
-          id: component.id,
-          name: component.name,
-          icon: component.icon,
-          rarity: component.rarity,
-          itemType: component.item_type,
-          description: component.description,
+          id: component.item.id,
+          name: component.item.name,
+          icon: component.item.icon,
+          rarity: component.item.rarity,
+          itemType: component.item.item_type,
+          description: component.item.description,
         })),
         usedIn: raw.used_in?.map((component) => ({
-          id: component.id,
-          name: component.name,
-          icon: component.icon,
-          rarity: component.rarity,
-          itemType: component.item_type,
-          description: component.description,
+          id: component.item.id,
+          name: component.item.name,
+          icon: component.item.icon,
+          rarity: component.item.rarity,
+          itemType: component.item.item_type,
+          description: component.item.description,
         })),
       }) satisfies Item,
   );
