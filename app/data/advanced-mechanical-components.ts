@@ -1,4 +1,4 @@
-const item = {
+export default {
   id: "advanced-mechanical-components",
   name: "Advanced Mechanical Components",
   description:
@@ -974,5 +974,3 @@ const item = {
   ],
   sold_by: [],
 };
-
-export default item;

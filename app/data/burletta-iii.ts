@@ -1,4 +1,4 @@
-const item = {
+export default {
   id: "burletta-iii",
   name: "Burletta III",
   description:
@@ -212,5 +212,3 @@ const item = {
   dropped_by: [],
   sold_by: [],
 };
-
-export default item;

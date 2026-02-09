@@ -1,5 +1,5 @@
 import { getItem } from "@/app/lib/items/item.service";
-import Card from "@/app/components/card";
+import Card from "@/app/components/card/card";
 import { notFound } from "next/navigation";
 
 interface ItemPageProps {

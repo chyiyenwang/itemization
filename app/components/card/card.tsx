@@ -2,20 +2,7 @@ import styles from "./card.module.css";
 import Image from "next/image";
 import RaiderCoin from "@/public/raider-coin.webp";
 import { RarityType } from "@/app/types";
-
-interface BadgeProps {
-  label: string;
-  rarity: string;
-}
-
-const Badge = ({ label, rarity }: BadgeProps) => (
-  <div
-    className={styles.badge}
-    style={{ backgroundColor: `var(--rarity-${rarity})` }}
-  >
-    {label}
-  </div>
-);
+import Badge from "@/app/components/badge/badge";
 
 interface CardProps {
   name: string;
@@ -23,11 +10,20 @@ interface CardProps {
   icon: string;
   rarity: RarityType;
   type: string;
-  area: string;
+  area: string | null;
   value: number;
   weight: number;
   stackSize: number;
 }
+
+const iconWrapperStyles = (type: string, rarity: string) => {
+  switch (type) {
+    case "Blueprint":
+      return `url('https://cdn.metaforge.app/arc-raiders/ui/blueprint-bg.webp') center/cover`;
+    default:
+      return `linear-gradient(45deg, var(--rarity-${rarity}-medium), var(--rarity-${rarity}-dark))`;
+  }
+};
 
 export default function Card({
   name,
@@ -46,18 +42,29 @@ export default function Card({
         className={styles.header}
         style={{ backgroundColor: `var(--rarity-${rarity})` }}
       >
-        {/* <img src={icon} alt={name} className={styles.icon} /> */}
+        <div
+          className={styles["icon-wrapper"]}
+          style={{
+            background: iconWrapperStyles(type, rarity),
+          }}
+        >
+          <img className={styles.icon} src={icon} alt={name} />
+        </div>
       </div>
 
       <div className={styles.body}>
-        <div className={styles.badges}>
+        <div className={styles["badge-wrapper"]}>
           <Badge label={type} rarity={rarity} />
           <Badge label={rarity} rarity={rarity} />
         </div>
         <h2 className={styles.name}>{name}</h2>
         <p className={styles.description}>{description}</p>
-        <h3 className={styles.location}>CAN BE FOUND IN</h3>
-        <p className={styles.area}>{area}</p>
+        {area && (
+          <>
+            <h3 className={styles.location}>CAN BE FOUND IN</h3>
+            <p className={styles.area}>{area}</p>
+          </>
+        )}
       </div>
 
       <div className={styles.footer}>

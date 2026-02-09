@@ -1,13 +1,37 @@
 :root {
   --background: #fff;
   --foreground: #171717;
+
+  /* Text */
   --text-primary: #171717;
   --text-secondary: #6c6c6c;
+
+  /* Rarity Common */
   --rarity-common: hsl(120deg 1% 45% / 100%);
+  --rarity-common-medium: hsl(120deg 1% 30% / 100%);
+  --rarity-common-dark: hsl(120deg 1% 10% / 100%);
+
+  /* Rarity Uncommon */
   --rarity-uncommon: hsl(134deg 81% 59% / 100%);
+  --rarity-uncommon-medium: hsl(134deg 81% 45% / 100%);
+  --rarity-uncommon-dark: hsl(134deg 81% 10% / 100%);
+
+  /* Rarity Rare */
   --rarity-rare: hsl(193deg 97% 55% / 100%);
+  --rarity-rare-medium: hsl(193deg 97% 40% / 100%);
+  --rarity-rare-dark: hsl(193deg 97% 10% / 100%);
+
+  /* Rarity Epic */
   --rarity-epic: hsl(321deg 69% 50% / 100%);
+  --rarity-epic-medium: hsl(321deg 69% 35% / 100%);
+  --rarity-epic-dark: hsl(321deg 69% 10% / 100%);
+
+  /* Rarity Legendary */
   --rarity-legendary: hsl(48deg 100% 49% / 100%);
+  --rarity-legendary-medium: hsl(48deg 100% 35% / 100%);
+  --rarity-legendary-dark: hsl(48deg 100% 10% / 100%);
+
+  /* Surface */
   --surface: hsl(40deg 26% 93% / 100%);
   --surface-footer: #d9cfbf;
 }

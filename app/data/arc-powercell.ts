@@ -1,4 +1,4 @@
-const item = {
+export default {
   id: "arc-powercell",
   name: "ARC Powercell",
   description:
@@ -250,5 +250,3 @@ const item = {
   ],
   sold_by: [],
 };
-
-export default item;

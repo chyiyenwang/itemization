@@ -1,4 +1,4 @@
-const item = {
+export default {
   id: "advanced-arc-powercell",
   name: "Advanced ARC Powercell",
   description: "Very valuable resource that drops from certain ARC enemies",
@@ -213,5 +213,3 @@ const item = {
   ],
   sold_by: [],
 };
-
-export default item;

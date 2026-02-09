@@ -1,4 +1,4 @@
-const item = {
+export default {
   id: "muzzle-brake-ii",
   name: "Muzzle Brake II",
   description: "Moderately reduces both vertical recoil & horizontal recoil.",
@@ -110,5 +110,3 @@ const item = {
   dropped_by: [],
   sold_by: [],
 };
-
-export default item;

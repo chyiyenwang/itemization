@@ -36,7 +36,7 @@ export async function getItem(id: string): Promise<Item | null> {
 
   const res = Object.values(items).find((item) => item.id === id);
   if (!res) return null;
-  console.log(res);
+
   const parsed = BaseItemSchema.safeParse(res);
   if (!parsed.success) {
     if (process.env.NODE_ENV !== "production") {

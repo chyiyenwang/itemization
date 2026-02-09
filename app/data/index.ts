@@ -9,3 +9,6 @@ export { default as "simple-gun-parts" } from "./simple-gun-parts";
 export { default as "muzzle-brake-ii" } from "./muzzle-brake-ii";
 export { default as "advanced-mechanical-components" } from "./advanced-mechanical-components";
 export { default as "barricade-kit" } from "./barricade-kit";
+export { default as "bobcat-i-recipe" } from "./bobcat-i-recipe";
+export { default as "bobcat-i" } from "./bobcat-i";
+export { default as "matriarch-reactor" } from "./matriarch-reactor";

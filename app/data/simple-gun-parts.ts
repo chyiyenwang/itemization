@@ -1,4 +1,4 @@
-const item = {
+export default {
   id: "simple-gun-parts",
   name: "Simple Gun Parts",
   description: "Used to craft weapons. Can be recycled into scrap metal.",
@@ -738,5 +738,3 @@ const item = {
     },
   ],
 };
-
-export default item;

@@ -1,4 +1,4 @@
-const item = {
+export default {
   id: "metal-parts",
   name: "Metal Parts",
   description: "Used to craft a wide range of items.",
@@ -960,5 +960,3 @@ const item = {
     },
   ],
 };
-
-export default item;
