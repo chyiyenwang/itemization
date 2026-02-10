@@ -32,6 +32,7 @@ const ThumbNails = ({ data }: ThumbnailProps) => (
             alt={component.component.name}
             src={component.component.icon}
             type={component.component.itemType}
+            sizes="(max-width: 100px), (max-width: 100px)"
           />
         </div>
       ))}
