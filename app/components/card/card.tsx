@@ -31,7 +31,7 @@ export default function Card({
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <Thumbnail rarity={rarity} icon={icon} type={type} name={name} />
+        <Thumbnail rarity={rarity} src={icon} type={type} alt={name} />
       </div>
 
       <div className={styles.body}>
@@ -52,7 +52,7 @@ export default function Card({
       <div className={styles.footer}>
         <div className={styles.stat}>{weight} kg</div>
         <div className={styles.stat}>
-          <Image src={RaiderCoin} alt="raider coin" width={16} height={16} />
+          <Image src={RaiderCoin} alt="raider coin" width={16} height={16} loading="eager" />
           <span>{value}</span>
         </div>
       </div>

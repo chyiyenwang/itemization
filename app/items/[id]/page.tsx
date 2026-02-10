@@ -1,6 +1,7 @@
 import { getItem } from "@/app/lib/items/item.service";
 import Card from "@/app/components/card/card";
 import Thumbnail from "@/app/components/thumbnail/thumbnail";
+import ThumbnailLink from "@/app/components/thumbnail/thumbnail-link";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import { Component } from "@/app/lib/items/item.types";
@@ -25,10 +26,11 @@ const ThumbNails = ({ data }: ThumbnailProps) => (
           key={component.component.id}
           className={styles["thumbnail-wrapper"]}
         >
-          <Thumbnail
+          <ThumbnailLink
+            href={`/items/${component.component.id}`}
             rarity={component.component.rarity}
-            name={component.component.name}
-            icon={component.component.icon}
+            alt={component.component.name}
+            src={component.component.icon}
             type={component.component.itemType}
           />
         </div>

@@ -4,7 +4,8 @@
 
   /* Text */
   --text-primary: #171717;
-  --text-secondary: oklch(55.% 0.04 257.45deg);
+  --text-secondary: #6c6c6c;
+  --text-tertiary: oklch(55% 0.04 257.45deg);
 
   /* Rarity Common */
   --rarity-common: hsl(120deg 1% 45% / 100%);

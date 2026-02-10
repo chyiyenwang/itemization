@@ -1,11 +1,9 @@
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import styles from "./thumbnail.module.css";
 
-interface ThumbnailProps {
+interface ThumbnailProps extends ImageProps {
   rarity: string;
-  icon: string;
   type: string;
-  name: string;
 }
 
 const iconWrapperStyles = (type: string, rarity: string) => {
@@ -19,9 +17,10 @@ const iconWrapperStyles = (type: string, rarity: string) => {
 
 export default function Thumbnail({
   rarity,
-  icon,
+  src,
+  alt,
   type,
-  name,
+  ...props
 }: ThumbnailProps) {
   return (
     <div
@@ -29,12 +28,18 @@ export default function Thumbnail({
       style={{ backgroundColor: `var(--rarity-${rarity})` }}
     >
       <div
-        className={styles["icon-wrapper"]}
+        className={styles["image-wrapper"]}
         style={{
           background: iconWrapperStyles(type, rarity),
         }}
       >
-        <Image src={icon} alt={`${name} icon`} fill objectFit="contain" />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          style={{ objectFit: "contain" }}
+          {...props}
+        />
       </div>
     </div>
   );
