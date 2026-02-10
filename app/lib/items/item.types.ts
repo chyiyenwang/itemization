@@ -1,12 +1,15 @@
 import { RarityType } from "@/app/types";
 
 export interface Component {
-  id: string;
-  name: string;
-  icon: string;
-  rarity: RarityType;
-  itemType: string;
-  description: string;
+  component: {
+    id: string;
+    name: string;
+    icon: string;
+    rarity: RarityType;
+    itemType: string;
+    description?: string;
+  };
+  quantity: number;
 }
 
 export interface Item {
@@ -22,6 +25,7 @@ export interface Item {
     weight: number;
     stackSize: number;
   };
+  components?: Component[];
   recycleComponents?: Component[];
   recycleFrom?: Component[];
   usedIn?: Component[];

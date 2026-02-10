@@ -4,7 +4,7 @@
 
   /* Text */
   --text-primary: #171717;
-  --text-secondary: #6c6c6c;
+  --text-secondary: oklch(55.% 0.04 257.45deg);
 
   /* Rarity Common */
   --rarity-common: hsl(120deg 1% 45% / 100%);
@@ -34,11 +34,12 @@
   /* Surface */
   --surface: hsl(40deg 26% 93% / 100%);
   --surface-footer: #d9cfbf;
+  --accordion-hover: rgb(30 41 59);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: rgb(16 25 34);
     --foreground: #ededed;
   }
 }

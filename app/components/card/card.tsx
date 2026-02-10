@@ -3,6 +3,7 @@ import Image from "next/image";
 import RaiderCoin from "@/public/raider-coin.webp";
 import { RarityType } from "@/app/types";
 import Badge from "@/app/components/badge/badge";
+import Thumbnail from "../thumbnail/thumbnail";
 
 interface CardProps {
   name: string;
@@ -15,15 +16,6 @@ interface CardProps {
   weight: number;
   stackSize: number;
 }
-
-const iconWrapperStyles = (type: string, rarity: string) => {
-  switch (type) {
-    case "Blueprint":
-      return `url('https://cdn.metaforge.app/arc-raiders/ui/blueprint-bg.webp') center/cover`;
-    default:
-      return `linear-gradient(45deg, var(--rarity-${rarity}-medium), var(--rarity-${rarity}-dark))`;
-  }
-};
 
 export default function Card({
   name,
@@ -38,18 +30,8 @@ export default function Card({
 }: CardProps) {
   return (
     <div className={styles.card}>
-      <div
-        className={styles.header}
-        style={{ backgroundColor: `var(--rarity-${rarity})` }}
-      >
-        <div
-          className={styles["icon-wrapper"]}
-          style={{
-            background: iconWrapperStyles(type, rarity),
-          }}
-        >
-          <img className={styles.icon} src={icon} alt={name} />
-        </div>
+      <div className={styles.header}>
+        <Thumbnail rarity={rarity} icon={icon} type={type} name={name} />
       </div>
 
       <div className={styles.body}>

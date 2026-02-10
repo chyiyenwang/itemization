@@ -1,0 +1,55 @@
+.accordion {
+  color: var(--text-secondary);
+
+  border: 1px solid var(--accordion-hover);
+  border-radius: 8px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  padding: 0.75rem;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--accordion-hover);
+  }
+}
+
+.content {
+  max-height: 0;
+
+  overflow: scroll;
+  transition: max-height 200ms ease;
+}
+
+.open {
+  max-height: 400px;
+}
+
+.arrow {
+  display: inline-block;
+  padding: 3px;
+
+  border: solid var(--text-secondary);
+
+  transition: transform 200ms ease;
+  border-width: 0 3px 3px 0;
+  margin-right: 12px;
+}
+
+.up-swing-left {
+  transform: rotate(225deg);
+}
+
+.up-swing-right {
+  transform: rotate(-135deg);
+}
+
+.down {
+  transform: rotate(45deg);
+}
