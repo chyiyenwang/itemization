@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import styles from "./accordion.module.css";
+import styles from "./Accordion.module.css";
 
 interface AccordionProps {
   header: string;

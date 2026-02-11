@@ -15,6 +15,23 @@
   grid-template-rows: 200px 1fr 50px;
 }
 
+.tooltip {
+  display: grid;
+
+  width: 400px;
+
+  background: var(--surface);
+
+  border-radius: 8px;
+
+  overflow: hidden;
+  grid-template-areas:
+    "body"
+    "footer";
+  grid-template-rows: 1fr 50px;
+
+}
+
 .header {
   grid-area: header;
 }

@@ -1,5 +1,5 @@
 import { ImageProps } from "next/image";
-import Thumbnail from "./thumbnail";
+import Thumbnail from "./Thumbnail";
 
 interface ThumbnailLinkProps extends ImageProps {
   href: string;

@@ -1,11 +1,11 @@
 import { getItem } from "@/app/lib/items/item.service";
-import Card from "@/app/components/card/card";
-import Thumbnail from "@/app/components/thumbnail/thumbnail";
-import ThumbnailLink from "@/app/components/thumbnail/thumbnail-link";
+import { Card } from "@/app/components/Card";
+import ThumbnailLink from "@/app/components/Thumbnail/ThumbnailLink";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import { Component } from "@/app/lib/items/item.types";
-import Accordion from "@/app/components/accordion/accordion";
+import Accordion from "@/app/components/Accordion/Accordion";
+import ItemTooltip from "@/app/components/Card/ItemTooltip";
 
 interface ItemPageProps {
   params: {
@@ -71,6 +71,15 @@ export default async function ItemPage({ params }: ItemPageProps) {
           value={item.value}
           weight={item.statBlock.weight}
           stackSize={item.statBlock.stackSize}
+        />
+        <ItemTooltip
+          name={item.name}
+          description={item.description}
+          rarity={item.rarity}
+          type={item.itemType}
+          area={item.lootArea}
+          value={item.value}
+          weight={item.statBlock.weight}
         />
       </div>
 

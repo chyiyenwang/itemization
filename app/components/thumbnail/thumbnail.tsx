@@ -1,5 +1,5 @@
 import Image, { ImageProps } from "next/image";
-import styles from "./thumbnail.module.css";
+import styles from "./Thumbnail.module.css";
 
 interface ThumbnailProps extends ImageProps {
   rarity: string;
