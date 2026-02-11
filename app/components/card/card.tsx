@@ -32,12 +32,7 @@ export default function Card({
 }: CardProps) {
   return (
     <div className={styles.card}>
-      <CardHeader
-        rarity={rarity}
-        src={icon}
-        type={type}
-        alt={name}
-      />
+      <CardHeader rarity={rarity} src={icon} type={type} alt={name} />
       <CardBody
         rarity={rarity}
         type={type}

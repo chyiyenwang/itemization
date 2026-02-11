@@ -20,7 +20,7 @@ export default function ItemTooltip({
   description,
   area,
   weight,
-  value
+  value,
 }: ItemTooltipProps) {
   return (
     <div className={styles.tooltip}>
@@ -33,5 +33,5 @@ export default function ItemTooltip({
       />
       <CardFooter weight={weight} value={value} />
     </div>
-  )
+  );
 }

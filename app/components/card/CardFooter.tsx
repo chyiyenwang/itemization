@@ -22,5 +22,5 @@ export default function CardFooter({ weight, value }: CardFooterProps) {
         <span>{value}</span>
       </div>
     </div>
-  )
+  );
 }

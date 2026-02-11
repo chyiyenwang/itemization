@@ -15,7 +15,7 @@ export default function CardBody({
   type,
   name,
   description,
-  area
+  area,
 }: CardBodyProps) {
   return (
     <div className={styles.body}>
@@ -34,5 +34,5 @@ export default function CardBody({
         </>
       )}
     </div>
-  )
+  );
 }
