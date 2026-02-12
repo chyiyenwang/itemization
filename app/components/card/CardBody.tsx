@@ -6,8 +6,8 @@ interface CardBodyProps {
   rarity: RarityType;
   type: string;
   name: string;
-  description: string;
-  area: string | null;
+  description?: string | null;
+  area?: string | null;
 }
 
 export default function CardBody({

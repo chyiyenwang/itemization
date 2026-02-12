@@ -15,22 +15,6 @@
   grid-template-rows: 200px 1fr 50px;
 }
 
-.tooltip {
-  display: grid;
-
-  width: 400px;
-
-  background: var(--surface);
-
-  border-radius: 8px;
-
-  overflow: hidden;
-  grid-template-areas:
-    "body"
-    "footer";
-  grid-template-rows: 1fr 50px;
-}
-
 .header {
   grid-area: header;
 }
@@ -53,6 +37,31 @@
   background: var(--surface-footer);
   grid-area: footer;
   grid-template-columns: 1fr 1fr;
+}
+
+.tooltip {
+  position: absolute;
+
+  display: grid;
+
+  max-width: 400px;
+  min-width: 300px;
+
+  background: var(--surface);
+
+  border-radius: 8px;
+
+  overflow: hidden;
+
+  box-shadow: 3px 3px 5px 1px black;
+
+  & .body {
+    display: grid;
+    padding: 8px;
+    gap: 16px;
+    grid-area: initial;
+    grid-auto-rows: min-content;
+  }
 }
 
 .stat {

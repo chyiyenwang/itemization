@@ -1,11 +1,11 @@
 import { getItem } from "@/app/lib/items/item.service";
 import { Card } from "@/app/components/Card";
-import ThumbnailLink from "@/app/components/Thumbnail/ThumbnailLink";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import { Component } from "@/app/lib/items/item.types";
 import Accordion from "@/app/components/Accordion/Accordion";
-import ItemTooltip from "@/app/components/Card/ItemTooltip";
+import HoverThumbnail from "@/app/components/Thumbnail/HoverThumbnail";
+import Thumbnail from "@/app/components/Thumbnail/Thumbnail";
 
 interface ItemPageProps {
   params: {
@@ -20,21 +20,26 @@ interface ThumbnailProps {
 const ThumbNails = ({ data }: ThumbnailProps) => (
   <>
     {data
-      ?.sort((a, b) => a.component.id.localeCompare(b.component.id))
-      .map((component: any) => (
-        <div
+      ?.sort((a: Component, b: Component) =>
+        a.component.id.localeCompare(b.component.id),
+      )
+      .map((component: Component) => (
+        <HoverThumbnail
           key={component.component.id}
-          className={styles["thumbnail-wrapper"]}
+          href={`/items/${component.component.id}`}
+          name={component.component.name}
+          description={component.component.description}
+          rarity={component.component.rarity}
+          type={component.component.itemType}
         >
-          <ThumbnailLink
-            href={`/items/${component.component.id}`}
+          <Thumbnail
             rarity={component.component.rarity}
-            alt={component.component.name}
             src={component.component.icon}
             type={component.component.itemType}
+            alt={component.component.name}
             sizes="(max-width: 100px), (max-width: 100px)"
           />
-        </div>
+        </HoverThumbnail>
       ))}
   </>
 );
@@ -72,20 +77,11 @@ export default async function ItemPage({ params }: ItemPageProps) {
           weight={item.statBlock.weight}
           stackSize={item.statBlock.stackSize}
         />
-        <ItemTooltip
-          name={item.name}
-          description={item.description}
-          rarity={item.rarity}
-          type={item.itemType}
-          area={item.lootArea}
-          value={item.value}
-          weight={item.statBlock.weight}
-        />
       </div>
 
       <div className={styles.right}>
         <Accordion
-          header="RECYCLED COMPONENTS"
+          header="RECYCLES INTO"
           count={item.recycleComponents?.length}
           direction="right"
         >
