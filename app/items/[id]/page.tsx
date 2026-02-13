@@ -27,19 +27,12 @@ const ThumbNails = ({ data }: ThumbnailProps) => (
         <HoverThumbnail
           key={component.component.id}
           href={`/items/${component.component.id}`}
+          src={component.component.icon}
           name={component.component.name}
           description={component.component.description}
           rarity={component.component.rarity}
           type={component.component.itemType}
-        >
-          <Thumbnail
-            rarity={component.component.rarity}
-            src={component.component.icon}
-            type={component.component.itemType}
-            alt={component.component.name}
-            sizes="(max-width: 100px), (max-width: 100px)"
-          />
-        </HoverThumbnail>
+        />
       ))}
   </>
 );
