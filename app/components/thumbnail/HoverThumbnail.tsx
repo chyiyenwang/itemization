@@ -65,12 +65,17 @@ export default function HoverThumbnail({
       const rect = thumbnailWrapperRef.current.getBoundingClientRect();
       const tooltip = tooltipRef.current.getBoundingClientRect();
 
-      window.innerWidth - (rect.right + OFFSET) < tooltip.width
-        ? setPosition({
-            top: rect.top,
-            left: rect.left - tooltip.width - OFFSET,
-          })
-        : setPosition({ top: rect.top, left: rect.right + OFFSET });
+      const top =
+        window.innerHeight - (rect.top + OFFSET) < tooltip.height
+          ? rect.top - (tooltip.height - rect.height)
+          : rect.top;
+
+      const left =
+        window.innerWidth - (rect.right + OFFSET) < tooltip.width
+          ? rect.left - tooltip.width - OFFSET
+          : rect.right + OFFSET;
+
+      setPosition({ top, left });
     }
   }, [showPopover]);
 
