@@ -5,7 +5,6 @@ import styles from "./page.module.css";
 import { Component } from "@/app/lib/items/item.types";
 import Accordion from "@/app/components/Accordion/Accordion";
 import HoverThumbnail from "@/app/components/Thumbnail/HoverThumbnail";
-import Thumbnail from "@/app/components/Thumbnail/Thumbnail";
 
 interface ItemPageProps {
   params: {
@@ -32,6 +31,9 @@ const ThumbNails = ({ data }: ThumbnailProps) => (
           description={component.component.description}
           rarity={component.component.rarity}
           type={component.component.itemType}
+          quantity={
+            component.quantity > 0 ? component.quantity.toString() : null
+          }
         />
       ))}
   </>

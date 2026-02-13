@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
+import Badge from "../Badge/Badge";
 import styles from "./Accordion.module.css";
 
 interface AccordionProps {
@@ -18,6 +19,11 @@ export default function Accordion({
 }: AccordionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const swingLeft = isOpen && direction === "left" && styles["up-swing-left"];
+  const swingRight =
+    isOpen && direction === "right" && styles["up-swing-right"];
+  const downArrow = !isOpen && styles.down;
+
   return (
     <div className={styles.accordion}>
       <div
@@ -26,18 +32,13 @@ export default function Accordion({
       >
         <span>
           <i
-            className={[
-              styles.arrow,
-              isOpen && direction === "left" && styles["up-swing-left"],
-              isOpen && direction === "right" && styles["up-swing-right"],
-              !isOpen && styles.down,
-            ]
+            className={[styles.arrow, swingLeft, swingRight, downArrow]
               .filter(Boolean)
               .join(" ")}
           />
           <span>{header}</span>
         </span>
-        <span>{count}</span>
+        <Badge variant="rounded" label={count.toString()} />
       </div>
       <div
         className={[styles.content, isOpen && styles.open]

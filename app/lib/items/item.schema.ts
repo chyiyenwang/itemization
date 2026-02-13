@@ -82,7 +82,7 @@ export const BaseItemSchema = z
             itemType: component.item.item_type,
             description: component.item.description,
           },
-          quantity: component?.quantity,
+          quantity: component.quantity,
         })),
         recycleComponents: raw.recycle_components?.map((component) => ({
           component: {
@@ -104,7 +104,7 @@ export const BaseItemSchema = z
             itemType: component.item.item_type,
             description: component.item.description,
           },
-          quantity: component.quantity,
+          quantity: 0,
         })),
       }) satisfies Item,
   );

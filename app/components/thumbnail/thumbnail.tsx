@@ -1,9 +1,11 @@
 import Image, { ImageProps } from "next/image";
 import styles from "./Thumbnail.module.css";
+import Badge from "../Badge/Badge";
 
 interface ThumbnailProps extends ImageProps {
   rarity: string;
   type: string;
+  quantity?: string | null;
 }
 
 const iconWrapperStyles = (type: string, rarity: string) => {
@@ -20,6 +22,7 @@ export default function Thumbnail({
   src,
   alt,
   type,
+  quantity,
   ...props
 }: ThumbnailProps) {
   return (
@@ -29,9 +32,7 @@ export default function Thumbnail({
     >
       <div
         className={styles["image-wrapper"]}
-        style={{
-          background: iconWrapperStyles(type, rarity),
-        }}
+        style={{ background: iconWrapperStyles(type, rarity) }}
       >
         <Image
           src={src}
@@ -40,6 +41,11 @@ export default function Thumbnail({
           style={{ objectFit: "contain" }}
           {...props}
         />
+        {quantity && (
+          <div className={styles["badge-wrapper"]}>
+            <Badge variant="rounded" label={quantity} />
+          </div>
+        )}
       </div>
     </div>
   );

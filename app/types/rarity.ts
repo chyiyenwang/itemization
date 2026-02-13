@@ -1,1 +1,7 @@
-export type RarityType = "common" | "uncommon" | "rare" | "epic" | "legendary";
+export type RarityType =
+  | "generic"
+  | "common"
+  | "uncommon"
+  | "rare"
+  | "epic"
+  | "legendary";

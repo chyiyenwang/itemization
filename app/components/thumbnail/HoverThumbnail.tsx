@@ -18,6 +18,7 @@ interface HoverThumbnailProps {
   description?: string | null;
   rarity: RarityType;
   type: string;
+  quantity: string | null;
 }
 
 export default function HoverThumbnail({
@@ -27,6 +28,7 @@ export default function HoverThumbnail({
   description,
   rarity,
   type,
+  quantity,
 }: HoverThumbnailProps) {
   const [showPopover, setShowPopover] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
@@ -80,6 +82,7 @@ export default function HoverThumbnail({
           src={src}
           type={type}
           alt={name}
+          quantity={quantity}
           sizes="(max-width: 100px), (max-width: 100px)"
         />
       </Link>

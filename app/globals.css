@@ -32,6 +32,9 @@
   --rarity-legendary-medium: hsl(48deg 100% 35% / 100%);
   --rarity-legendary-dark: hsl(48deg 100% 10% / 100%);
 
+  /* Rarity Generic */
+  --rarity-generic: hsl(0deg 0% 70%);
+
   /* Surface */
   --surface: hsl(40deg 26% 93% / 100%);
   --surface-footer: #d9cfbf;
