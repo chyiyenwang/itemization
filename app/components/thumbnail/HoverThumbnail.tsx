@@ -7,9 +7,9 @@ import ItemTooltip from "../Card/ItemTooltip";
 import { RarityType } from "@/app/types";
 import Thumbnail from "./Thumbnail";
 
-import styles from "./Thumbnail.module.css";
+import useTooltip from "@/app/hooks/useTooltip";
 
-const OFFSET = 8;
+import styles from "./Thumbnail.module.css";
 
 interface HoverThumbnailProps {
   href: string;
@@ -30,57 +30,17 @@ export default function HoverThumbnail({
   type,
   quantity,
 }: HoverThumbnailProps) {
-  const [showPopover, setShowPopover] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-  const thumbnailWrapperRef = useRef<HTMLDivElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
-  const openTimeout = useRef<ReturnType<typeof setTimeout>>(null);
-
-  const clearOpenTimeout = () => {
-    if (openTimeout.current) {
-      clearTimeout(openTimeout.current);
-      openTimeout.current = null;
-    }
-  };
-
-  const handleEnter = () => {
-    clearOpenTimeout();
-
-    openTimeout.current = setTimeout(() => {
-      setShowPopover(true);
-    }, 120);
-  };
-
-  const handleLeave = () => {
-    clearOpenTimeout();
-    setShowPopover(false);
-  };
-
-  useEffect(() => {
-    return clearOpenTimeout;
-  }, [clearOpenTimeout]);
-
-  useLayoutEffect(() => {
-    if (showPopover && thumbnailWrapperRef.current && tooltipRef.current) {
-      const rect = thumbnailWrapperRef.current.getBoundingClientRect();
-      const tooltip = tooltipRef.current.getBoundingClientRect();
-
-      const top =
-        window.innerHeight - (rect.top + OFFSET) < tooltip.height
-          ? rect.top - (tooltip.height - rect.height)
-          : rect.top;
-
-      const left =
-        window.innerWidth - (rect.right + OFFSET) < tooltip.width
-          ? rect.left - tooltip.width - OFFSET
-          : rect.right + OFFSET;
-
-      setPosition({ top, left });
-    }
-  }, [showPopover]);
+  const {
+    handleEnter,
+    handleLeave,
+    showPopover,
+    position,
+    triggerRef,
+    contentRef,
+  } = useTooltip();
 
   return (
-    <div ref={thumbnailWrapperRef} className={styles["thumbnail-wrapper"]}>
+    <div ref={triggerRef} className={styles["thumbnail-wrapper"]}>
       <Link href={href} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
         <Thumbnail
           rarity={rarity}
@@ -94,7 +54,7 @@ export default function HoverThumbnail({
       {showPopover &&
         createPortal(
           <ItemTooltip
-            ref={tooltipRef}
+            ref={contentRef}
             name={name}
             description={description}
             rarity={rarity}
