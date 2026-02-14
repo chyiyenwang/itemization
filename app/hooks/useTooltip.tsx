@@ -4,11 +4,24 @@ import {
   useEffect,
   useLayoutEffect,
   useCallback,
+  RefObject,
 } from "react";
+
+interface UseTooltipReturn {
+  showPopover: boolean;
+  position: {
+    top: number;
+    left: number;
+  };
+  handleEnter: () => void;
+  handleLeave: () => void;
+  triggerRef: RefObject<HTMLDivElement | null>;
+  contentRef: RefObject<HTMLDivElement | null>;
+}
 
 const OFFSET = 8;
 
-export default function useTooltip() {
+export default function useTooltip(): UseTooltipReturn {
   const [showPopover, setShowPopover] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
