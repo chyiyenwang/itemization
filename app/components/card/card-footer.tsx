@@ -1,6 +1,6 @@
 import Image from "next/image";
 import RaiderCoin from "@/public/raider-coin.webp";
-import styles from "./Card.module.css";
+import styles from "./card.module.css";
 
 interface CardFooterProps {
   weight: number;

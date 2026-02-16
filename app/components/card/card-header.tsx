@@ -1,5 +1,5 @@
-import Thumbnail from "../Thumbnail/Thumbnail";
-import styles from "./Card.module.css";
+import Thumbnail from "../thumbnail/thumbnail";
+import styles from "./card.module.css";
 
 interface CardHeaderProps {
   rarity: string;

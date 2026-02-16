@@ -1,11 +1,11 @@
 import Image, { ImageProps } from "next/image";
-import styles from "./Thumbnail.module.css";
-import Badge from "../Badge/Badge";
+import styles from "./thumbnail.module.css";
+import Badge from "../badge/badge";
 
 interface ThumbnailProps extends ImageProps {
   rarity: string;
   type: string;
-  quantity?: string | null;
+  quantity?: string | number;
 }
 
 const iconWrapperStyles = (type: string, rarity: string) => {
