@@ -18,14 +18,10 @@ export default function HoverThumbnail({ data }: HoverThumbnailProps) {
     quantity,
   } = data;
 
-  const {
-    handleEnter,
-    handleLeave,
-    triggerRef,
-  } = useTooltip();
+  const { handleEnter, handleLeave } = useTooltip();
 
   return (
-    <div ref={triggerRef} className={styles["thumbnail-wrapper"]}>
+    <div className={styles["thumbnail-wrapper"]}>
       <Link
         href={`/images/${id}`}
         onMouseEnter={(e) => handleEnter(e.currentTarget, data.component)}

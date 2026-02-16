@@ -7,26 +7,42 @@ import {
   useCallback,
   useLayoutEffect,
   ReactNode,
+  useMemo,
 } from "react";
-import TooltipContext from "../contexxts/TooltipContext";
+import TooltipContext from "../contexts/TooltipContext";
 import { createPortal } from "react-dom";
 import ItemTooltip from "../components/Card/ItemTooltip";
 import { Component } from "../lib/items/item.types";
 
+type Position = {
+  top: number;
+  left: number;
+};
+
+type Rect = {
+  top: number;
+  left: number;
+  right: number;
+  height: number;
+};
+
+type Tooltip = {
+  height: number;
+  width: number;
+};
+
 const OFFSET = 8;
 
 export default function TooltipProvider({ children }: { children: ReactNode }) {
-  const [showPopover, setShowPopover] = useState<boolean>(false);
-  const [triggerData, setTriggerData] = useState<Component["component"] | null>(
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [activeItem, setActiveItem] = useState<Component["component"] | null>(
     null,
   );
-  const [triggerPosition, setTriggerPosition] = useState<DOMRect | null>(null);
-  const [position, setPosition] = useState<{top: number, left: number}>({ top: 0, left: 0 });
+  const [triggerRect, setTriggerRect] = useState<Rect | null>(null);
+  const [position, setPosition] = useState<Position>({ top: 0, left: 0 });
 
-  const triggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-
-  const openTimeout = useRef<ReturnType<typeof setTimeout>>(null);
+  const openTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearOpenTimeout = useCallback(() => {
     if (openTimeout.current) {
@@ -35,65 +51,75 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const handleEnter = (e: HTMLElement, data: Component["component"]) => {
-    clearOpenTimeout();
-    const rect = e.getBoundingClientRect();
+  const handleEnter = useCallback(
+    (e: HTMLElement, data: Component["component"]) => {
+      clearOpenTimeout();
+      const rect = e.getBoundingClientRect();
 
-    openTimeout.current = setTimeout(() => {
-      setTriggerData(data);
-      setTriggerPosition(rect);
-      setShowPopover(true);
-    }, 120);
-  };
+      openTimeout.current = setTimeout(() => {
+        setActiveItem(data);
+        setTriggerRect(rect);
+        setIsOpen(true);
+      }, 120);
+    },
+    [clearOpenTimeout],
+  );
 
-  const handleLeave = () => {
+  const handleLeave = useCallback(() => {
     clearOpenTimeout();
-    setShowPopover(false);
-  };
+    setIsOpen(false);
+  }, [clearOpenTimeout]);
 
   useEffect(() => {
     return clearOpenTimeout;
   }, [clearOpenTimeout]);
 
-  useLayoutEffect(() => {
-    if (showPopover && triggerPosition && contentRef.current) {
-      const tooltip = contentRef.current.getBoundingClientRect();
+  const calculatePosition = (triggerRect: Rect, tooltip: Tooltip) => {
+    const top =
+      window.innerHeight - (triggerRect.top + OFFSET) < tooltip.height
+        ? triggerRect.top - (tooltip.height - triggerRect.height)
+        : triggerRect.top;
 
-      const top =
-        window.innerHeight - (triggerPosition.top + OFFSET) < tooltip.height
-          ? triggerPosition.top - (tooltip.height - triggerPosition.height)
-          : triggerPosition.top;
+    const left =
+      window.innerWidth - (triggerRect.right + OFFSET) < tooltip.width
+        ? triggerRect.left - tooltip.width - OFFSET
+        : triggerRect.right + OFFSET;
 
-      const left =
-        window.innerWidth - (triggerPosition.right + OFFSET) < tooltip.width
-          ? triggerPosition.left - tooltip.width - OFFSET
-          : triggerPosition.right + OFFSET;
-
-      setPosition({ top, left });
-    }
-  }, [showPopover]);
-
-  const value = {
-    showPopover,
-    position,
-    handleEnter,
-    handleLeave,
-    triggerRef,
-    contentRef,
+    return { top: top + window.scrollY, left: left + window.scrollX };
   };
+
+  useLayoutEffect(() => {
+    if (!isOpen || !triggerRect || !contentRef.current) return;
+
+    const tooltip = contentRef.current.getBoundingClientRect();
+
+    const { top, left } = calculatePosition(triggerRect, tooltip);
+
+    setPosition({ top, left });
+  }, [isOpen, triggerRect]);
+
+  const value = useMemo(() => {
+    return {
+      isOpen,
+      position,
+      handleEnter,
+      handleLeave,
+      contentRef,
+    };
+  }, [isOpen, position, handleEnter, handleLeave, contentRef]);
 
   return (
     <TooltipContext.Provider value={value}>
       {children}
-      {showPopover &&
-        triggerData &&
+      {isOpen &&
+        activeItem &&
         createPortal(
           <ItemTooltip
             ref={contentRef}
-            name={triggerData.name}
-            description={triggerData.description}
-            rarity={triggerData.rarity}
-            type={triggerData.itemType}
+            name={activeItem.name}
+            description={activeItem.description}
+            rarity={activeItem.rarity}
+            type={activeItem.itemType}
             style={{
               position: "absolute",
               left: `${position.left}px`,

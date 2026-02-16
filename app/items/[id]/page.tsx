@@ -19,11 +19,9 @@ interface ThumbnailProps {
 
 const ThumbNails = ({ data }: ThumbnailProps) => (
   <>
-    {data
-      ?.sort((a: Component, b: Component) =>
-        a.component.id.localeCompare(b.component.id),
-      )
-      .map((component: Component) => (
+    {[...data]
+      .sort((a, b) => a.component.id.localeCompare(b.component.id))
+      .map((component) => (
         <HoverThumbnail key={component.component.id} data={component} />
       ))}
   </>
