@@ -1,5 +1,5 @@
 import { forwardRef, ForwardedRef } from "react";
-import CardBody from "./CardBody";
+import CardBody from "./card-body";
 import styles from "./Card.module.css";
 import { RarityType } from "@/app/types";
 import { CSSProperties } from "react";

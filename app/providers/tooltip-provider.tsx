@@ -9,9 +9,9 @@ import {
   ReactNode,
   useMemo,
 } from "react";
-import TooltipContext from "../contexts/TooltipContext";
+import TooltipContext from "../contexts/tooltip-context";
 import { createPortal } from "react-dom";
-import ItemTooltip from "../components/Card/ItemTooltip";
+import ItemTooltip from "../components/card/item-tooltip";
 import { Component } from "../lib/items/item.types";
 
 type Position = {

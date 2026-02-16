@@ -1,4 +1,4 @@
-import Thumbnail from "../Thumbnail/Thumbnail";
+import Thumbnail from "../thumbnail/thumbnail";
 import styles from "./Card.module.css";
 
 interface CardHeaderProps {

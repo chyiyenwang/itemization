@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Thumbnail from "./Thumbnail";
+import Thumbnail from "./thumbnail";
 
 import useTooltip from "@/app/hooks/useTooltip";
 

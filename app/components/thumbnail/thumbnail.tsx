@@ -1,6 +1,6 @@
 import Image, { ImageProps } from "next/image";
 import styles from "./Thumbnail.module.css";
-import Badge from "../Badge/Badge";
+import Badge from "../badge/badge";
 
 interface ThumbnailProps extends ImageProps {
   rarity: string;

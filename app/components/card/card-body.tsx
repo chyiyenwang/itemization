@@ -1,4 +1,4 @@
-import Badge from "../Badge/Badge";
+import Badge from "../badge/badge";
 import { RarityType } from "@/app/types";
 import styles from "./Card.module.css";
 

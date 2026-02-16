@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import Badge from "../Badge/Badge";
+import Badge from "../badge/badge";
 import styles from "./Accordion.module.css";
 
 interface AccordionProps {

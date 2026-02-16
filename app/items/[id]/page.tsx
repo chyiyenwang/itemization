@@ -1,10 +1,10 @@
 import { getItem } from "@/app/lib/items/item.service";
-import { Card } from "@/app/components/Card";
+import { Card } from "@/app/components/card";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import { Component } from "@/app/lib/items/item.types";
-import Accordion from "@/app/components/Accordion/Accordion";
-import HoverThumbnail from "@/app/components/Thumbnail/HoverThumbnail";
+import Accordion from "@/app/components/accordion/accordion";
+import HoverThumbnail from "@/app/components/thumbnail/HoverThumbnail";
 import TooltipProvider from "@/app/providers/TooltipProvider";
 
 interface ItemPageProps {
