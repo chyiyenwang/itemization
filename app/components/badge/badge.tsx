@@ -3,7 +3,7 @@ import styles from "./Badge.module.css";
 
 interface BadgeProps {
   variant?: "default" | "rounded";
-  label: string;
+  label: string | number;
   rarity?: RarityType;
 }
 

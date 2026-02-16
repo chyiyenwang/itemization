@@ -56,6 +56,8 @@
 
   box-shadow: 3px 3px 5px 1px black;
 
+  pointer-events: none;
+
   & .body {
     display: grid;
     padding: 8px;

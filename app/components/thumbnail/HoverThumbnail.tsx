@@ -1,47 +1,36 @@
 "use client";
 
-import { useState, useRef, useLayoutEffect, useEffect } from "react";
-import { createPortal } from "react-dom";
 import Link from "next/link";
-import ItemTooltip from "../Card/ItemTooltip";
-import { RarityType } from "@/app/types";
 import Thumbnail from "./Thumbnail";
 
 import useTooltip from "@/app/hooks/useTooltip";
 
 import styles from "./Thumbnail.module.css";
+import { Component } from "@/app/lib/items/item.types";
 
 interface HoverThumbnailProps {
-  href: string;
-  src: string;
-  name: string;
-  description?: string | null;
-  rarity: RarityType;
-  type: string;
-  quantity: string | null;
+  data: Component;
 }
 
-export default function HoverThumbnail({
-  href,
-  src,
-  name,
-  description,
-  rarity,
-  type,
-  quantity,
-}: HoverThumbnailProps) {
+export default function HoverThumbnail({ data }: HoverThumbnailProps) {
+  const {
+    component: { id, rarity, icon: src, itemType: type, name },
+    quantity,
+  } = data;
+
   const {
     handleEnter,
     handleLeave,
-    showPopover,
-    position,
     triggerRef,
-    contentRef,
   } = useTooltip();
 
   return (
     <div ref={triggerRef} className={styles["thumbnail-wrapper"]}>
-      <Link href={href} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+      <Link
+        href={`/images/${id}`}
+        onMouseEnter={(e) => handleEnter(e.currentTarget, data.component)}
+        onMouseLeave={handleLeave}
+      >
         <Thumbnail
           rarity={rarity}
           src={src}
@@ -51,22 +40,6 @@ export default function HoverThumbnail({
           sizes="(max-width: 100px), (max-width: 100px)"
         />
       </Link>
-      {showPopover &&
-        createPortal(
-          <ItemTooltip
-            ref={contentRef}
-            name={name}
-            description={description}
-            rarity={rarity}
-            type={type}
-            style={{
-              position: "absolute",
-              left: `${position.left}px`,
-              top: `${position.top}px`,
-            }}
-          />,
-          document.body,
-        )}
     </div>
   );
 }

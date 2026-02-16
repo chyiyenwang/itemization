@@ -5,7 +5,7 @@ import Badge from "../Badge/Badge";
 interface ThumbnailProps extends ImageProps {
   rarity: string;
   type: string;
-  quantity?: string | null;
+  quantity?: string | number;
 }
 
 const iconWrapperStyles = (type: string, rarity: string) => {
