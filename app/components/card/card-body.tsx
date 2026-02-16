@@ -1,6 +1,6 @@
 import Badge from "../badge/badge";
 import { RarityType } from "@/app/types";
-import styles from "./Card.module.css";
+import styles from "./card.module.css";
 
 interface CardBodyProps {
   rarity: RarityType;

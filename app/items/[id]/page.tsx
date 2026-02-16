@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import { Component } from "@/app/lib/items/item.types";
 import Accordion from "@/app/components/accordion/accordion";
-import HoverThumbnail from "@/app/components/thumbnail/HoverThumbnail";
-import TooltipProvider from "@/app/providers/TooltipProvider";
+import HoverThumbnail from "@/app/components/thumbnail/hover-thumbnail";
+import TooltipProvider from "@/app/providers/tooltip-provider";
 
 interface ItemPageProps {
   params: {

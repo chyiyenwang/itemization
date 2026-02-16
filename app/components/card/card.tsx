@@ -1,8 +1,5 @@
-import styles from "./Card.module.css";
-import Image from "next/image";
+import styles from "./card.module.css";
 import { RarityType } from "@/app/types";
-import Badge from "@/app/components/badge/badge";
-import Thumbnail from "../thumbnail/thumbnail";
 import CardHeader from "./card-header";
 import CardFooter from "./card-footer";
 import CardBody from "./card-body";

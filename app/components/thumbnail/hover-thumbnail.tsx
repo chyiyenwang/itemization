@@ -3,9 +3,9 @@
 import Link from "next/link";
 import Thumbnail from "./thumbnail";
 
-import useTooltip from "@/app/hooks/useTooltip";
+import useTooltip from "@/app/hooks/use-tooltip";
 
-import styles from "./Thumbnail.module.css";
+import styles from "./thumbnail.module.css";
 import { Component } from "@/app/lib/items/item.types";
 
 interface HoverThumbnailProps {

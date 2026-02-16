@@ -1,5 +1,5 @@
 import Image, { ImageProps } from "next/image";
-import styles from "./Thumbnail.module.css";
+import styles from "./thumbnail.module.css";
 import Badge from "../badge/badge";
 
 interface ThumbnailProps extends ImageProps {

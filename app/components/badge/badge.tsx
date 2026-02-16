@@ -1,5 +1,5 @@
 import { RarityType } from "@/app/types";
-import styles from "./Badge.module.css";
+import styles from "./badge.module.css";
 
 interface BadgeProps {
   variant?: "default" | "rounded";
