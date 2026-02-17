@@ -10,15 +10,28 @@
   height: 100%;
   padding: 0 6px;
 
+  font-size: large;
+
   border: 1px solid var(--surface);
   border-radius: var(--border-radius-style);
   outline-style: none;
 
   &.input-with-autocomplete {
-    transition: border-radius var(--timing-normal) ease;
+    /* transition: border-radius var(--timing-normal) ease; */
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
+}
+
+.clear {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+
+  font-size: xx-large;
+
+  transform: translate(0, -50%);
+  cursor: pointer;
 }
 
 .autocomplete {
@@ -27,7 +40,6 @@
   z-index: 5;
 
   width: 100%;
-  padding: 0 6px;
 
   color: var(--text-primary);
 
@@ -35,8 +47,21 @@
 
   opacity: 0;
 
+  overflow: hidden;
+
+  border-bottom-left-radius: var(--border-radius-style);
+  border-bottom-right-radius: var(--border-radius-style);
+
   & .list-item {
+    height: 40px;
+    padding: 0 6px;
+
+    line-height: 2.5;
     list-style-type: none;
+
+    &:hover {
+      background-color: skyblue;
+    }
   }
 }
 
@@ -45,7 +70,11 @@
 
   opacity: 1;
 
-  transition: top var(--timing-fast) ease;
+  /* transition: top var(--timing-fast) ease; */
 
-  /* transition: opacity var(--timing-fast) ease; */
+  transition: opacity var(--timing-fast) ease;
+}
+
+.hide {
+  display: none;
 }

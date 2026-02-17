@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import * as items from "@/app/data";
 import Link from "next/link";
 
-import styles from "./input.module.css";
+import styles from "./search-bar.module.css";
 
 export default function Input() {
   const [inputValue, setInputValue] = useState<string>("");
@@ -34,13 +34,21 @@ export default function Input() {
           placeholder="Search items..."
           className={[
             styles.input,
-            showAutocomplete && styles["input-with-autocomplete"],
+            showAutocomplete &&
+              filteredItems.length > 0 &&
+              styles["input-with-autocomplete"],
           ]
             .filter(Boolean)
             .join(" ")}
           value={inputValue}
           onChange={(e) => handleInputChange(e.currentTarget.value)}
         />
+        <span
+          className={inputValue.length > 0 ? styles.clear : styles.hide}
+          onClick={() => setInputValue("")}
+        >
+          &times;
+        </span>
         {filteredItems.length > 0 && (
           <ul
             className={[
