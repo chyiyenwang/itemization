@@ -1,0 +1,51 @@
+.input-container {
+  position: relative;
+
+  width: 450px;
+  height: 100%;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  padding: 0 6px;
+
+  border: 1px solid var(--surface);
+  border-radius: var(--border-radius-style);
+  outline-style: none;
+
+  &.input-with-autocomplete {
+    transition: border-radius var(--timing-normal) ease;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.autocomplete {
+  position: absolute;
+  top: 0;
+  z-index: 5;
+
+  width: 100%;
+  padding: 0 6px;
+
+  color: var(--text-primary);
+
+  background: var(--surface);
+
+  opacity: 0;
+
+  & .list-item {
+    list-style-type: none;
+  }
+}
+
+.show-autocomplete {
+  top: 50px;
+
+  opacity: 1;
+
+  transition: top var(--timing-fast) ease;
+
+  /* transition: opacity var(--timing-fast) ease; */
+}

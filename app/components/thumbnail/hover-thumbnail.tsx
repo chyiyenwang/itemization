@@ -23,7 +23,7 @@ export default function HoverThumbnail({ data }: HoverThumbnailProps) {
   return (
     <div className={styles["thumbnail-wrapper"]}>
       <Link
-        href={`/images/${id}`}
+        href={`/items/${id}`}
         onMouseEnter={(e) => handleEnter(e.currentTarget, data.component)}
         onMouseLeave={handleLeave}
       >
