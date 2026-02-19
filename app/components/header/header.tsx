@@ -7,16 +7,14 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <span className={styles.brand}>
-        <a href="/">
-          <span className={styles["logo-wrapper"]}>
-            <Image
-              className={styles.logo}
-              src="/arc-raiders-logo.webp"
-              alt="Arc Raiders Logo"
-              width={50}
-              height={50}
-            />
-          </span>
+        <a className={styles["logo-wrapper"]} href="/">
+          <Image
+            className={styles.logo}
+            src="/arc-raiders-logo.webp"
+            alt="Arc Raiders Logo"
+            width={50}
+            height={50}
+          />
           <div className={styles.title}>
             <h4>ARC</h4>
             <h4>Raiders</h4>

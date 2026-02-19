@@ -24,43 +24,52 @@
 .brand {
   display: flex;
 
-  a {
+  .logo-wrapper {
+    position: relative;
+
     display: inline-flex;
     align-items: center;
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+
+    box-shadow: 0 0 7.5px;
+    transition: box-shadow var(--timing-normal) ease-in-out;
+
+    &:hover {
+      box-shadow: 0 0 20px;
+    }
+
+    &::before {
+      position: absolute;
+      top: 25%;
+      left: 50%;
+
+      display: block;
+      width: 1.5px;
+      height: 25px;
+
+      background-color: var(--foreground);
+
+      box-shadow: 0 0 10px;
+
+      transform: translate(-50%, -50%) rotate(0deg);
+      animation: rotate-clock 5s linear infinite;
+      content: "";
+      transform-origin: bottom center;
+    }
   }
-}
 
-.title {
-  line-height: 0.9;
-  margin-left: 8px;
-}
+  .logo {
+    border: 1px solid var(--foreground);
+    border-radius: 50%;
+  }
 
-.logo-wrapper {
-  position: relative;
-
-  width: 50px;
-  height: 50px;
-
-  border: 1px solid white;
-  border-radius: 50%;
-
-  overflow: hidden;
-
-  &::before {
-    position: absolute;
-    top: 25%;
-    left: 50%;
-
-    display: block;
-    width: 1px;
-    height: 25px;
-
-    background-color: white;
-
-    transform: translate(-50%, -50%) rotate(0deg);
-    animation: rotate-clock 5s linear infinite;
-    content: "";
-    transform-origin: bottom center;
+  .title {
+    line-height: 0.9;
+    margin-left: 8px;
   }
 }
 

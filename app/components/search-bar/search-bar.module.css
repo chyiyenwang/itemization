@@ -13,7 +13,7 @@
   font-size: large;
 
   border: 1px solid var(--surface);
-  border-radius: var(--border-radius-style);
+  border-radius: var(--radius);
   outline-style: none;
 
   &.input-with-autocomplete {
@@ -49,8 +49,8 @@
 
   overflow: hidden;
 
-  border-bottom-left-radius: var(--border-radius-style);
-  border-bottom-right-radius: var(--border-radius-style);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
 
   & .list-item {
     height: 40px;

@@ -41,7 +41,7 @@ export default function Accordion({
         <Badge variant="rounded" label={count.toString()} />
       </div>
       <div
-        className={[styles.content, isOpen && styles.open]
+        className={[styles["content-closed"], isOpen && styles["content-open"]]
           .filter(Boolean)
           .join(" ")}
       >

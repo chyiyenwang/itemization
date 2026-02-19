@@ -2,7 +2,7 @@
   color: var(--text-tertiary);
 
   border: 1px solid var(--accordion-hover);
-  border-radius: 8px;
+  border-radius: var(--radius);
 }
 
 .header {
@@ -22,14 +22,14 @@
   }
 }
 
-.content {
+.content-closed {
   max-height: 0;
 
   overflow: scroll;
-  transition: max-height 200ms ease;
+  transition: max-height var(--timing-normal) ease;
 }
 
-.open {
+.content-open {
   max-height: 400px;
 }
 
@@ -37,7 +37,7 @@
   display: inline-block;
   padding: 3px;
 
-  transition: transform 200ms ease;
+  transition: transform var(--timing-normal) ease;
   border-color: var(--text-tertiary);
   border-style: solid;
   border-width: 0 3px 3px 0;

@@ -6,7 +6,7 @@
 
   background: var(--surface);
 
-  border-radius: 8px;
+  border-radius: var(--radius);
 
   overflow: hidden;
   grid-template-areas:
@@ -51,7 +51,7 @@
 
   background: var(--surface);
 
-  border-radius: 8px;
+  border-radius: var(--radius);
 
   overflow: hidden;
 

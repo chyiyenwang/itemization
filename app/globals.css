@@ -41,7 +41,7 @@
   --accordion-hover: rgb(30 41 59);
 
   /* Border Radius */
-  --border-radius-style: 8px;
+  --radius: 8px;
 
   /* Timings */
   --timing-fast: 120ms;
