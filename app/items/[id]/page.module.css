@@ -1,6 +1,6 @@
 .item-page {
   display: grid;
-  height: calc(100dvh - 50px);
+  height: calc(100dvh - var(--header-height));
   grid-template-columns: 1fr 400px 1fr;
 }
 

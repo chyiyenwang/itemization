@@ -2,7 +2,7 @@
   display: grid;
 
   width: 400px;
-  max-height: 500px;
+  max-height: min-content;
 
   background: var(--surface);
 

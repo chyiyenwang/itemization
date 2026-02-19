@@ -5,7 +5,7 @@ import styles from "./header.module.css";
 
 export default function Header() {
   return (
-    <div className={styles.header}>
+    <header className={styles.header}>
       <span className={styles.brand}>
         <a href="/">
           <span className={styles["logo-wrapper"]}>
@@ -17,10 +17,10 @@ export default function Header() {
               height={50}
             />
           </span>
-          <h3 className={styles.title}>
-            <div>Arc</div>
-            <div>Raiders</div>
-          </h3>
+          <div className={styles.title}>
+            <h4>ARC</h4>
+            <h4>Raiders</h4>
+          </div>
         </a>
       </span>
 
@@ -33,6 +33,6 @@ export default function Header() {
           <h2>Items</h2>
         </Link>
       </span>
-    </div>
+    </header>
   );
 }

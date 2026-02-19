@@ -13,10 +13,12 @@
   justify-content: space-between;
   align-items: center;
 
-  height: 50px;
-  padding: 0 16px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--accordion-hover);
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 50px;
+  grid-template-rows: min-content;
+
+  --header-height: auto;
 }
 
 .brand {
@@ -29,6 +31,7 @@
 }
 
 .title {
+  line-height: 0.9;
   margin-left: 8px;
 }
 

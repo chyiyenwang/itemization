@@ -35,7 +35,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
 
   return (
     <TooltipProvider>
-      <div className={styles["item-page"]}>
+      <main className={styles["item-page"]}>
         <div className={styles.left}>
           <Accordion header="COMPONENTS" count={item.components?.length}>
             <div className={styles.components}>
@@ -85,7 +85,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
             </div>
           </Accordion>
         </div>
-      </div>
+      </main>
     </TooltipProvider>
   );
 }
