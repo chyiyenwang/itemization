@@ -16,9 +16,7 @@ interface ItemPageProps {
 export default async function ItemPage({ params }: ItemPageProps) {
   const { id } = await params;
   const item = await getItem(id);
-
   if (!item) return notFound();
-
   return (
     <TooltipProvider>
       <main className={styles["item-page"]}>
