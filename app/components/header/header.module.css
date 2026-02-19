@@ -1,3 +1,13 @@
+@keyframes rotate-clock {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 .header {
   display: grid;
   justify-content: space-between;
@@ -9,17 +19,53 @@
   grid-template-rows: 50px;
 }
 
-.logo {
-  /* display: grid; */
+.brand {
+  display: flex;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+.title {
+  margin-left: 8px;
+}
+
+.logo-wrapper {
+  position: relative;
+
+  width: 50px;
+  height: 50px;
+
+  border: 1px solid white;
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  &::before {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+
+    display: block;
+    width: 1px;
+    height: 25px;
+
+    background-color: white;
+
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: rotate-clock 5s linear infinite;
+    content: "";
+    transform-origin: bottom center;
+  }
 }
 
 .searchbar {
-  /* display: grid; */
   height: 100%;
   justify-self: center;
 }
 
 .navigation {
-  /* display: grid; */
   justify-self: end;
 }
