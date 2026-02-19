@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import { Component } from "@/app/lib/items/item.types";
 import Accordion from "@/app/components/accordion/accordion";
-import HoverThumbnail from "@/app/components/thumbnail/hover-thumbnail";
+import ThumbnailList from "@/app/components/thumbnail/thumbnail-list";
 import TooltipProvider from "@/app/providers/tooltip-provider";
 
 interface ItemPageProps {
@@ -12,20 +12,6 @@ interface ItemPageProps {
     id: string;
   };
 }
-
-interface ThumbnailProps {
-  data: Component[];
-}
-
-const ThumbNails = ({ data }: ThumbnailProps) => (
-  <>
-    {[...data]
-      .sort((a, b) => a.component.id.localeCompare(b.component.id))
-      .map((component) => (
-        <HoverThumbnail key={component.component.id} data={component} />
-      ))}
-  </>
-);
 
 export default async function ItemPage({ params }: ItemPageProps) {
   const { id } = await params;
@@ -39,12 +25,12 @@ export default async function ItemPage({ params }: ItemPageProps) {
         <div className={styles.left}>
           <Accordion header="COMPONENTS" count={item.components?.length}>
             <div className={styles.components}>
-              {item.components && <ThumbNails data={item.components} />}
+              {item.components && <ThumbnailList data={item.components} />}
             </div>
           </Accordion>
           <Accordion header="USED IN" count={item.usedIn?.length}>
             <div className={styles["used-in"]}>
-              {item.usedIn && <ThumbNails data={item.usedIn} />}
+              {item.usedIn && <ThumbnailList data={item.usedIn} />}
             </div>
           </Accordion>
         </div>
@@ -71,7 +57,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
           >
             <div className={styles["recycle-components"]}>
               {item.recycleComponents && (
-                <ThumbNails data={item.recycleComponents} />
+                <ThumbnailList data={item.recycleComponents} />
               )}
             </div>
           </Accordion>
@@ -81,7 +67,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
             direction="right"
           >
             <div className={styles["recycle-from"]}>
-              {item.recycleFrom && <ThumbNails data={item.recycleFrom} />}
+              {item.recycleFrom && <ThumbnailList data={item.recycleFrom} />}
             </div>
           </Accordion>
         </div>
