@@ -107,12 +107,10 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
       contentRef,
     };
   }, [isOpen, position, handleEnter, handleLeave, contentRef]);
-
   return (
     <TooltipContext.Provider value={value}>
       {children}
-      {isOpen &&
-        activeItem &&
+      {activeItem &&
         createPortal(
           <ItemTooltip
             ref={contentRef}
@@ -124,6 +122,7 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
               position: "absolute",
               left: `${position.left}px`,
               top: `${position.top}px`,
+              opacity: `${isOpen ? "1" : "0"}`,
             }}
           />,
           document.body,
