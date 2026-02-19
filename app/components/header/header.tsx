@@ -3,6 +3,8 @@ import Image from "next/image";
 import SearchBar from "../search-bar/search-bar";
 import styles from "./header.module.css";
 
+// TODO: Add a loading skeleton for images
+
 export default function Header() {
   return (
     <header className={styles.header}>
