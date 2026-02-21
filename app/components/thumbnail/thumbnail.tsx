@@ -5,7 +5,7 @@ import Badge from "../badge/badge";
 interface ThumbnailProps extends ImageProps {
   rarity: string;
   type: string;
-  quantity?: string | number;
+  quantity: string | number | null;
 }
 
 export default function Thumbnail({

@@ -9,7 +9,7 @@ export interface Component {
     itemType: string;
     description?: string;
   };
-  quantity: number | string;
+  quantity: number | string | null;
 }
 
 export interface Item {

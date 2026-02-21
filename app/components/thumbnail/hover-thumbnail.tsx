@@ -10,13 +10,15 @@ import { Component } from "@/app/lib/items/item.types";
 
 interface HoverThumbnailProps {
   data: Component;
+  children: React.ReactNode;
 }
 
-export default function HoverThumbnail({ data }: HoverThumbnailProps) {
-  const {
-    component: { id, rarity, icon: src, itemType: type, name },
-    quantity,
-  } = data;
+export default function HoverThumbnail({
+  data,
+  children,
+}: HoverThumbnailProps) {
+  const { component } = data;
+  const { id } = component;
 
   const { handleEnter, handleLeave } = useTooltip();
 
@@ -24,17 +26,10 @@ export default function HoverThumbnail({ data }: HoverThumbnailProps) {
     <div className={styles["thumbnail-wrapper"]}>
       <Link
         href={`/items/${id}`}
-        onMouseEnter={(e) => handleEnter(e.currentTarget, data.component)}
+        onMouseEnter={(e) => handleEnter(e.currentTarget, component)}
         onMouseLeave={handleLeave}
       >
-        <Thumbnail
-          rarity={rarity}
-          src={src}
-          type={type}
-          alt={name}
-          quantity={quantity}
-          sizes="(max-width: 100px), (max-width: 100px)"
-        />
+        {children}
       </Link>
     </div>
   );

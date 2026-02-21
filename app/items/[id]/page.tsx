@@ -2,7 +2,6 @@ import { getItem } from "@/app/lib/items/item.service";
 import { Card } from "@/app/components/card";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
-import { Component } from "@/app/lib/items/item.types";
 import Accordion from "@/app/components/accordion/accordion";
 import ThumbnailList from "@/app/components/thumbnail/thumbnail-list";
 import TooltipProvider from "@/app/providers/tooltip-provider";

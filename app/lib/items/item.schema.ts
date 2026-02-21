@@ -18,7 +18,7 @@ const ChildBaseItemSchema = z.object({
 
 const ChildItemSchema = z.object({
   item: ChildBaseItemSchema,
-  quantity: z.number(),
+  quantity: z.number().nullable(),
 });
 
 const ComponentItemSchema = z.object({
@@ -104,7 +104,7 @@ export const BaseItemSchema = z
             itemType: component.item.item_type,
             description: component.item.description,
           },
-          quantity: 0,
+          quantity: null,
         })),
       }) satisfies Item,
   );

@@ -12,6 +12,7 @@ import {
 import TooltipContext from "../contexts/tooltip-context";
 import { createPortal } from "react-dom";
 import ItemTooltip from "../components/card/item-tooltip";
+import { calculatePosition } from "../utils/dom-position";
 import { Component } from "../lib/items/item.types";
 
 type Position = {
@@ -25,13 +26,6 @@ type Rect = {
   right: number;
   height: number;
 };
-
-type Tooltip = {
-  height: number;
-  width: number;
-};
-
-const OFFSET = 8;
 
 export default function TooltipProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -73,20 +67,6 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     return clearOpenTimeout;
   }, [clearOpenTimeout]);
-
-  const calculatePosition = (triggerRect: Rect, tooltip: Tooltip) => {
-    const top =
-      window.innerHeight - (triggerRect.top + OFFSET) < tooltip.height
-        ? triggerRect.top - (tooltip.height - triggerRect.height)
-        : triggerRect.top;
-
-    const left =
-      window.innerWidth - (triggerRect.right + OFFSET) < tooltip.width
-        ? triggerRect.left - tooltip.width - OFFSET
-        : triggerRect.right + OFFSET;
-
-    return { top: top + window.scrollY, left: left + window.scrollX };
-  };
 
   useLayoutEffect(() => {
     if (!isOpen || !triggerRect || !contentRef.current) return;

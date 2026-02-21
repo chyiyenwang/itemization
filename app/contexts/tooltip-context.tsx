@@ -1,5 +1,3 @@
-"use client";
-
 import { createContext, RefObject } from "react";
 import { Component } from "../lib/items/item.types";
 
