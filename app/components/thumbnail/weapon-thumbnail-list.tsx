@@ -1,6 +1,12 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import Thumbnail from "./thumbnail";
 import { Component } from "@/app/lib/items/item.types";
@@ -23,13 +29,29 @@ export default function WeaponThumbnail({
   const contentRef = useRef<HTMLDivElement>(null);
   const openTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
+  const clearOpenTimeout = useCallback(() => {
+    if (openTimeout.current) {
+      clearTimeout(openTimeout.current);
+      openTimeout.current = null;
+    }
+  }, []);
 
-  const handleClose = () => {
+  const handleOpen = useCallback(() => {
+    clearOpenTimeout();
+
+    openTimeout.current = setTimeout(() => {
+      setIsOpen(true);
+    }, 120);
+  }, [clearOpenTimeout]);
+
+  const handleClose = useCallback(() => {
+    clearOpenTimeout();
     setIsOpen(false);
-  };
+  }, [clearOpenTimeout]);
+
+  useEffect(() => {
+    return clearOpenTimeout;
+  }, [clearOpenTimeout]);
 
   useLayoutEffect(() => {
     if (!isOpen || !rectRef.current || !contentRef.current) return;
@@ -37,8 +59,8 @@ export default function WeaponThumbnail({
     const content = contentRef.current.getBoundingClientRect();
 
     const { top, left } = calculatePosition(rect, content);
-    console.log({ top, left });
-    setPosition({ top: top - 8, left });
+
+    setPosition({ top: top - 8, left: left - 8 });
   }, [isOpen]);
 
   return (
