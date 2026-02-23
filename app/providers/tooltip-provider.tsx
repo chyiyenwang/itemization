@@ -80,13 +80,11 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(() => {
     return {
-      isOpen,
-      position,
       handleEnter,
       handleLeave,
-      contentRef,
     };
-  }, [isOpen, position, handleEnter, handleLeave, contentRef]);
+  }, [handleEnter, handleLeave]);
+
   return (
     <TooltipContext.Provider value={value}>
       {children}
@@ -99,7 +97,6 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
             rarity={activeItem.rarity}
             type={activeItem.itemType}
             style={{
-              position: "absolute",
               left: `${position.left}px`,
               top: `${position.top}px`,
               opacity: `${isOpen ? "1" : "0"}`,

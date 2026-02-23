@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Thumbnail from "./thumbnail";
 
 import useTooltip from "@/app/hooks/use-tooltip";
 
@@ -23,14 +22,12 @@ export default function HoverThumbnail({
   const { handleEnter, handleLeave } = useTooltip();
 
   return (
-    <div className={styles["thumbnail-wrapper"]}>
-      <Link
-        href={`/items/${id}`}
-        onMouseEnter={(e) => handleEnter(e.currentTarget, component)}
-        onMouseLeave={handleLeave}
-      >
-        {children}
-      </Link>
+    <div
+      className={styles["thumbnail-wrapper"]}
+      onMouseEnter={(e) => handleEnter(e.currentTarget, component)}
+      onMouseLeave={handleLeave}
+    >
+      <Link href={`/items/${id}`}>{children}</Link>
     </div>
   );
 }

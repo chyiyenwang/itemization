@@ -1,4 +1,5 @@
-.thumbnail-wrapper {
+.thumbnail-wrapper,
+.weapon-thumbnail-wrapper {
   position: relative;
 
   width: 100px;
