@@ -1,5 +1,4 @@
 import { useRef, useCallback, useEffect } from "react";
-import { Component } from "../lib/items/item.types";
 
 interface UseDelayedHoverOptions<T extends any[]> {
   delay?: number;
