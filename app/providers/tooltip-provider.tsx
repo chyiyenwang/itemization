@@ -14,6 +14,7 @@ import { createPortal } from "react-dom";
 import ItemTooltip from "../components/card/item-tooltip";
 import { calculatePosition } from "../utils/dom-position";
 import { Component } from "../lib/items/item.types";
+import useDelayedHover from "../hooks/use-delayed-hover";
 
 type Position = {
   top: number;
@@ -36,37 +37,17 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
   const [position, setPosition] = useState<Position>({ top: 0, left: 0 });
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const openTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const clearOpenTimeout = useCallback(() => {
-    if (openTimeout.current) {
-      clearTimeout(openTimeout.current);
-      openTimeout.current = null;
-    }
-  }, []);
-
-  const handleEnter = useCallback(
-    (e: HTMLElement, data: Component["component"]) => {
-      clearOpenTimeout();
+  const { handleDelayedOpen, handleDelayedClose } = useDelayedHover({
+    onOpen: (e, data) => {
+      if (!e || !data) return;
       const rect = e.getBoundingClientRect();
-
-      openTimeout.current = setTimeout(() => {
-        setActiveItem(data);
-        setTriggerRect(rect);
-        setIsOpen(true);
-      }, 120);
+      setActiveItem(data);
+      setTriggerRect(rect);
+      setIsOpen(true);
     },
-    [clearOpenTimeout],
-  );
-
-  const handleLeave = useCallback(() => {
-    clearOpenTimeout();
-    setIsOpen(false);
-  }, [clearOpenTimeout]);
-
-  useEffect(() => {
-    return clearOpenTimeout;
-  }, [clearOpenTimeout]);
+    onClose: () => setIsOpen(false),
+  });
 
   useLayoutEffect(() => {
     if (!isOpen || !triggerRect || !contentRef.current) return;
@@ -80,10 +61,10 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(() => {
     return {
-      handleEnter,
-      handleLeave,
+      handleEnter: handleDelayedOpen,
+      handleLeave: handleDelayedClose,
     };
-  }, [handleEnter, handleLeave]);
+  }, [handleDelayedOpen, handleDelayedClose]);
 
   return (
     <TooltipContext.Provider value={value}>
