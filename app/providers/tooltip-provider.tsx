@@ -32,7 +32,6 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
 
   const { handleDelayedOpen, handleDelayedClose } = useDelayedHover({
     onOpen: (e, data) => {
-      if (!e || !data) return;
       const rect = e.getBoundingClientRect();
       setActiveItem(data);
       setTriggerRect(rect);
@@ -72,7 +71,7 @@ export default function TooltipProvider({ children }: { children: ReactNode }) {
             style={{
               left: `${position.left}px`,
               top: `${position.top}px`,
-              opacity: `${isOpen ? "1" : "0"}`,
+              opacity: `${isOpen ? 1 : 0}`,
             }}
           />,
           document.body,

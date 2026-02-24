@@ -15,18 +15,20 @@ export default forwardRef(function SpeedDial(
 ) {
   return (
     <div ref={ref} className={styles["speed-dial"]} style={style}>
-      {data.map((c) => (
-        <HoverThumbnail key={c.component.id} data={c}>
-          <Thumbnail
-            rarity={c.component.rarity}
-            src={c.component.icon}
-            type={c.component.itemType}
-            alt={c.component.name}
-            quantity={c.quantity}
-            sizes="(max-width: 100px), (max-width: 100px)"
-          />
-        </HoverThumbnail>
-      ))}
+      <div className={styles["speed-dial-inner"]}>
+        {data.map((c) => (
+          <HoverThumbnail key={c.component.id} data={c}>
+            <Thumbnail
+              rarity={c.component.rarity}
+              src={c.component.icon}
+              type={c.component.itemType}
+              alt={c.component.name}
+              quantity={c.quantity}
+              sizes="(max-width: 100px), (max-width: 100px)"
+            />
+          </HoverThumbnail>
+        ))}
+      </div>
     </div>
   );
 });

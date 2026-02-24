@@ -18,6 +18,7 @@ export default function WeaponThumbnail({
   children,
 }: WeaponThumbnailProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const rectRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -27,13 +28,17 @@ export default function WeaponThumbnail({
   });
 
   useLayoutEffect(() => {
+    setIsActive(true);
+  }, [isActive]);
+
+  useLayoutEffect(() => {
     if (!isOpen || !rectRef.current || !contentRef.current) return;
     const rect = rectRef.current.getBoundingClientRect();
     const content = contentRef.current.getBoundingClientRect();
 
     const { top, left } = calculatePosition(rect, content);
 
-    setPosition({ top: top - 8, left: left - 8 });
+    setPosition({ top, left });
   }, [isOpen]);
 
   return (
@@ -44,7 +49,7 @@ export default function WeaponThumbnail({
       onMouseLeave={handleDelayedClose}
     >
       {children}
-      {isOpen &&
+      {isActive &&
         createPortal(
           <SpeedDial
             ref={contentRef}
@@ -53,6 +58,8 @@ export default function WeaponThumbnail({
               position: "absolute",
               top: position.top,
               left: position.left,
+              gridTemplateRows: isOpen ? "1fr" : "0fr",
+              opacity: isOpen ? "1" : "0",
             }}
           />,
           document.body,
