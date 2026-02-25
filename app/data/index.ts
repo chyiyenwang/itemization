@@ -12,3 +12,5 @@ export { default as "barricade-kit" } from "./barricade-kit";
 export { default as "bobcat-i-recipe" } from "./bobcat-i-recipe";
 export { default as "bobcat-i" } from "./bobcat-i";
 export { default as "matriarch-reactor" } from "./matriarch-reactor";
+export { default as "heavy-shields" } from "./heavy-shield";
+export { default as "looting-mk-3-survivor" } from "./looting-mk-3-survivor";
