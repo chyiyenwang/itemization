@@ -58,7 +58,7 @@ model Stat {
   health                        Float   @default(0)
   radius                        Float   @default(0)
   shield                        Float   @default(0)
-  weight                        Float
+  weight                        Float   @default(0)
   agility                       Float   @default(0)
   arcStun                       Float   @default(0)
   healing                       Float   @default(0)

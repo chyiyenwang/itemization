@@ -1,6 +1,6 @@
 import { BaseItemSchema } from "./item.schema";
 import type { Item } from "./item.types";
-import seedDb from "@/app/utils/seedDb";
+import dataFromApi from "@/app/utils/dataFromApi";
 
 import * as items from "@/app/data";
 
@@ -37,7 +37,7 @@ export async function getItem(id: string): Promise<Item | null> {
   const res = Object.values(items).find((item) => item.id === id);
   if (!res) return null;
 
-  seedDb(res);
+  await dataFromApi(res);
 
   const parsed = BaseItemSchema.safeParse(res);
   if (!parsed.success) {

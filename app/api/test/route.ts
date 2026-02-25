@@ -5,10 +5,18 @@ export async function GET() {
   const result = await prisma.item.findMany({
     include: {
       stat_block: true,
-      used_in: true,
-      components: true,
-      recycle_components: true,
-      recycle_from: true,
+      used_in: {
+        include: { item: true },
+      },
+      components: {
+        include: { component: true },
+      },
+      recycle_components: {
+        include: { component: true },
+      },
+      recycle_from: {
+        include: { item: true },
+      },
     },
   });
   console.log(result);
