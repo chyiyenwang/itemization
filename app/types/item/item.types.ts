@@ -14,8 +14,8 @@ export interface Item {
     weight: number;
     stackSize: number;
   };
-  components: Component[];
-  recycleComponents: Component[];
-  recycleFrom: Component[];
-  usedIn: Component[];
+  components?: Component[];
+  recycleComponents?: Component[];
+  recycleFrom?: Component[];
+  usedIn?: Component[];
 }
