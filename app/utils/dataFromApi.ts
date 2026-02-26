@@ -1,11 +1,11 @@
 import { prisma } from "../lib/prisma";
-import { ApiDataItem, ApiDataComponent } from "@/app/types/api";
+import { ApiDataItem, ApiDataComponent, ApiBaseComponent } from "@/app/types";
 
 function normalizeData(data: ApiDataComponent[]) {
   return data.map((c) => {
     return {
       quantity: Number(c.quantity ?? 0),
-      component: c.item ?? c.component!,
+      component: (c.item ?? c.component) as ApiBaseComponent,
     };
   });
 }
