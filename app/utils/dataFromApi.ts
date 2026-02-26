@@ -1,6 +1,16 @@
 import { prisma } from "../lib/prisma";
+import { ApiDataItem, ApiDataComponent } from "../lib/items/item.types";
 
-function mapCreateItemData(item: any) {
+function normalizeData(data: ApiDataComponent[]) {
+  return data.map((c) => {
+    return {
+      quantity: Number(c.quantity ?? 0),
+      component: c.type === "item" ? c.item : c.component,
+    };
+  });
+}
+
+function mapCreateItemData(item: ApiDataItem) {
   return {
     id: item.id,
     name: item.name,
@@ -24,7 +34,7 @@ function mapCreateItemData(item: any) {
   };
 }
 
-function mapUpsertItemData(item: any) {
+function mapUpsertItemData(item: ApiDataItem) {
   return {
     id: item.id,
     name: item.name,
@@ -52,13 +62,14 @@ function mapUpsertItemData(item: any) {
   };
 }
 
-function mapCreateComponentData(data: any[]) {
+function mapCreateComponentData(data: ApiDataComponent[]) {
+  const normalized = normalizeData(data);
+
   return {
     createMany: {
-      data: data.map((c) => {
-        const compId = c.item?.id ?? c.component.id;
+      data: normalized.map((c) => {
         return {
-          component_id: compId,
+          component_id: c.component.id,
           quantity: c.quantity,
         };
       }),
@@ -66,25 +77,26 @@ function mapCreateComponentData(data: any[]) {
   };
 }
 
-function mapDeleteAndUpsertComponentData(id: string, data: any[]) {
+function mapDeleteAndUpsertComponentData(id: string, data: ApiDataComponent[]) {
+  const normalized = normalizeData(data);
+
   return {
     deleteMany: {
       component_id: {
-        notIn: data.map((c) => c.item?.id ?? c.component.id),
+        notIn: normalized.map((c) => c.component.id),
       },
     },
-    upsert: data.map((comp) => {
-      const compId = comp.item?.id ?? comp.component.id;
+    upsert: normalized.map((comp) => {
       return {
         where: {
           item_id_component_id: {
             item_id: id,
-            component_id: compId,
+            component_id: comp.component.id,
           },
         },
         update: { quantity: comp.quantity },
         create: {
-          component_id: compId,
+          component_id: comp.component.id,
           quantity: comp.quantity,
         },
       };
@@ -92,7 +104,8 @@ function mapDeleteAndUpsertComponentData(id: string, data: any[]) {
   };
 }
 
-export default async function dataFromApi(ApiDataItem: any) {
+export default async function dataFromApi(ApiDataItem: ApiDataItem) {
+  console.log(ApiDataItem);
   try {
     const { id, used_in, recycle_from, recycle_components, components } =
       ApiDataItem;
@@ -114,7 +127,7 @@ export default async function dataFromApi(ApiDataItem: any) {
           id,
           recycle_components,
         ),
-        components: mapDeleteAndUpsertComponentData(id, components),
+        components: mapDeleteAndUpsertComponentData(id, components ?? []),
       },
     });
     console.log(`Successfully inserted ${ApiDataItem.id}`);
