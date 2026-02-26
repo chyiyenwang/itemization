@@ -1,11 +1,11 @@
 import { prisma } from "../lib/prisma";
-import { ApiDataItem, ApiDataComponent } from "../lib/items/item.types";
+import { ApiDataItem, ApiDataComponent } from "@/app/types/api";
 
 function normalizeData(data: ApiDataComponent[]) {
   return data.map((c) => {
     return {
       quantity: Number(c.quantity ?? 0),
-      component: c.type === "item" ? c.item : c.component,
+      component: c.item ?? c.component!,
     };
   });
 }
@@ -64,7 +64,7 @@ function mapUpsertItemData(item: ApiDataItem) {
 
 function mapCreateComponentData(data: ApiDataComponent[]) {
   const normalized = normalizeData(data);
-
+  console.log(normalized);
   return {
     createMany: {
       data: normalized.map((c) => {
