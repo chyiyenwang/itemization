@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-import { Item } from "@/app/lib/items/item.types";
-import { RarityType } from "@/app/types";
+import { RarityType, Item } from "@/app/types";
 
 const CapitalizedRarity = ["Common", "Uncommon", "Rare", "Epic", "Legendary"];
 

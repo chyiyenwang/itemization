@@ -13,7 +13,7 @@ import TooltipContext from "../contexts/tooltip-context";
 import { createPortal } from "react-dom";
 import ItemTooltip from "../components/card/item-tooltip";
 import { calculatePosition } from "../utils/dom-position";
-import { Component } from "../lib/items/item.types";
+import { Component } from "@/app/types";
 
 type Position = {
   top: number;

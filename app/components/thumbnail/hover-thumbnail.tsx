@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Thumbnail from "./thumbnail";
 
 import useTooltip from "@/app/hooks/use-tooltip";
 
 import styles from "./thumbnail.module.css";
-import { Component } from "@/app/lib/items/item.types";
+import { Component } from "@/app/types";
 
 interface HoverThumbnailProps {
   data: Component;

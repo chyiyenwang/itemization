@@ -1,5 +1,5 @@
 import HoverThumbnail from "./hover-thumbnail";
-import { Component } from "@/app/lib/items/item.types";
+import { Component } from "@/app/types";
 import Thumbnail from "./thumbnail";
 
 interface ThumbnailListProps {
