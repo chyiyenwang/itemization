@@ -9,6 +9,8 @@ export interface ApiBaseComponent {
   description?: string;
 }
 
+// item = used_in && recycle_from
+// component = components && recycle_components
 export interface ApiDataComponent {
   item?: ApiBaseComponent;
   component?: ApiBaseComponent;
