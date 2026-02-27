@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import * as items from "@/app/data";
 import Link from "next/link";
 import useOutsideClick from "@/app/hooks/use-outside-click";
+import paths from "@/app/paths";
 
 import styles from "./search-bar.module.css";
 
@@ -62,14 +63,14 @@ export default function Input() {
             .filter(Boolean)
             .join(" ")}
         >
-          {filteredItems.map((item) => {
+          {filteredItems.map((id) => {
             return (
               <Link
-                key={item}
-                href={`/items/${item}`}
+                key={id}
+                href={paths.itemShow(id)}
                 onClick={() => setInputValue("")}
               >
-                <li className={styles["list-item"]}>{item}</li>
+                <li className={styles["list-item"]}>{id}</li>
               </Link>
             );
           })}

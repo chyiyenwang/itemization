@@ -1,6 +1,7 @@
 import { BaseItemSchema } from "./item.schema";
-import type { Item } from "./item.types";
+import { Item } from "@/app/types";
 import dataFromApi from "@/app/utils/dataFromApi";
+import { ApiDataItem } from "@/app/types";
 
 import * as items from "@/app/data";
 
@@ -37,7 +38,7 @@ export async function getItem(id: string): Promise<Item | null> {
   const res = Object.values(items).find((item) => item.id === id);
   if (!res) return null;
 
-  await dataFromApi(res);
+  await dataFromApi(res as unknown as ApiDataItem);
 
   const parsed = BaseItemSchema.safeParse(res);
   if (!parsed.success) {

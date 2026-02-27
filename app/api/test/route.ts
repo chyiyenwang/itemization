@@ -1,5 +1,4 @@
-// app/api/test/route.ts
-import { prisma } from "../../lib/prisma";
+import { prisma } from "@/app/db/prisma";
 
 export async function GET() {
   const result = await prisma.item.findMany({

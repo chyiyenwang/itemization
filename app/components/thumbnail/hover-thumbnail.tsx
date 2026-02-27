@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import useTooltip from "@/app/hooks/use-tooltip";
+import paths from "@/app/paths";
 
 import styles from "./thumbnail.module.css";
 import { Component } from "@/app/types";
@@ -24,7 +25,7 @@ export default function HoverThumbnail({
   return (
     <div className={styles["thumbnail-wrapper"]}>
       <Link
-        href={`/items/${id}`}
+        href={paths.itemShow(id)}
         onMouseEnter={(e) => handleEnter(e.currentTarget, component)}
         onMouseLeave={handleLeave}
       >

@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "@/app/db/prisma";
 import { ApiDataItem, ApiDataComponent, ApiBaseComponent } from "@/app/types";
 
 function normalizeData(data: ApiDataComponent[]) {
@@ -105,7 +105,6 @@ function mapDeleteAndUpsertComponentData(id: string, data: ApiDataComponent[]) {
 }
 
 export default async function dataFromApi(ApiDataItem: ApiDataItem) {
-  console.log(ApiDataItem);
   try {
     const { id, used_in, recycle_from, recycle_components, components } =
       ApiDataItem;

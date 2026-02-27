@@ -1,11 +1,11 @@
 export default async function ItemsPage() {
-  const data = await fetch(
-    "https://metaforge.app/api/arc-raiders/items?limit=10&includeComponents=true",
-    {
-      cache: "force-cache",
-    },
-  );
-  const items = await data.json();
+  // const data = await fetch(
+  //   "https://metaforge.app/api/arc-raiders/items?limit=10&includeComponents=true",
+  //   {
+  //     cache: "force-cache",
+  //   },
+  // );
+  // const items = await data.json();
 
   return (
     <div>
