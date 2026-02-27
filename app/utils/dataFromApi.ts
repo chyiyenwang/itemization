@@ -4,7 +4,7 @@ import { ApiDataItem, ApiDataComponent, ApiBaseComponent } from "@/app/types";
 function normalizeData(data: ApiDataComponent[]) {
   return data.map((c) => {
     return {
-      quantity: Number(c.quantity ?? 0),
+      quantity: c.quantity,
       component: (c.item ?? c.component) as ApiBaseComponent,
     };
   });

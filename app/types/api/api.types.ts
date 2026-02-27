@@ -12,7 +12,7 @@ export interface ApiBaseComponent {
 export interface ApiDataComponent {
   item?: ApiBaseComponent;
   component?: ApiBaseComponent;
-  quantity: number | string | null;
+  quantity: number;
 }
 
 export interface ApiDataItem {

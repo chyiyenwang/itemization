@@ -4,7 +4,7 @@ import { RarityType, Item } from "@/app/types";
 
 const CapitalizedRarity = ["Common", "Uncommon", "Rare", "Epic", "Legendary"];
 
-const ChildBaseItemSchema = z.object({
+const ChildItemBaseSchema = z.object({
   id: z.string(),
   name: z.string(),
   icon: z.string(),
@@ -15,13 +15,15 @@ const ChildBaseItemSchema = z.object({
   description: z.string().optional(),
 });
 
+// used_in && recycle_from
 const ChildItemSchema = z.object({
-  item: ChildBaseItemSchema,
+  item: ChildItemBaseSchema,
   quantity: z.number().nullable(),
 });
 
-const ComponentItemSchema = z.object({
-  component: ChildBaseItemSchema,
+// components && recycle_components
+const ChildComponentSchema = z.object({
+  component: ChildItemBaseSchema,
   quantity: z.number(),
 });
 
@@ -41,9 +43,9 @@ export const BaseItemSchema = z
       weight: z.number(),
       stackSize: z.number(),
     }),
-    components: z.array(ComponentItemSchema).optional(),
+    components: z.array(ChildComponentSchema).optional(),
     used_in: z.array(ChildItemSchema).optional(),
-    recycle_components: z.array(ComponentItemSchema).optional(),
+    recycle_components: z.array(ChildComponentSchema).optional(),
     recycle_from: z.array(ChildItemSchema).optional(),
   })
   .transform(
