@@ -1,4 +1,4 @@
-import { prisma } from "@/app/db/prisma";
+import { prisma } from "@/app/lib/prisma";
 
 export async function GET() {
   const result = await prisma.item.findMany({
@@ -18,7 +18,7 @@ export async function GET() {
       },
     },
   });
-  console.log(result);
+  // console.log(result);
   const safeResult = result.map((row: any) => ({
     ...row,
     value: Number(row.value),

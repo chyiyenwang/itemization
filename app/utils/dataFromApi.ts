@@ -1,7 +1,7 @@
-import { prisma } from "@/app/db/prisma";
 import { ApiDataItem, ApiDataComponent, ApiBaseComponent } from "@/app/types";
 
-function normalizeData(data: ApiDataComponent[]) {
+export function normalizeData(data: ApiDataComponent[]) {
+  console.log(data);
   return data.map((c) => {
     return {
       quantity: c.quantity,
@@ -10,7 +10,7 @@ function normalizeData(data: ApiDataComponent[]) {
   });
 }
 
-function mapCreateItemData(item: ApiDataItem) {
+export function mapCreateItemData(item: ApiDataItem) {
   return {
     id: item.id,
     name: item.name,
@@ -34,7 +34,7 @@ function mapCreateItemData(item: ApiDataItem) {
   };
 }
 
-function mapUpsertItemData(item: ApiDataItem) {
+export function mapUpsertItemData(item: ApiDataItem) {
   return {
     id: item.id,
     name: item.name,
@@ -62,9 +62,9 @@ function mapUpsertItemData(item: ApiDataItem) {
   };
 }
 
-function mapCreateComponentData(data: ApiDataComponent[]) {
+export function mapCreateComponentData(data: ApiDataComponent[]) {
   const normalized = normalizeData(data);
-  console.log(normalized);
+
   return {
     createMany: {
       data: normalized.map((c) => {
@@ -77,7 +77,10 @@ function mapCreateComponentData(data: ApiDataComponent[]) {
   };
 }
 
-function mapDeleteAndUpsertComponentData(id: string, data: ApiDataComponent[]) {
+export function mapDeleteAndUpsertComponentData(
+  id: string,
+  data: ApiDataComponent[],
+) {
   const normalized = normalizeData(data);
 
   return {
@@ -102,35 +105,4 @@ function mapDeleteAndUpsertComponentData(id: string, data: ApiDataComponent[]) {
       };
     }),
   };
-}
-
-export default async function dataFromApi(ApiDataItem: ApiDataItem) {
-  try {
-    const { id, used_in, recycle_from, recycle_components, components } =
-      ApiDataItem;
-    console.log("inserting...", id);
-    await prisma.item.upsert({
-      where: { id },
-      create: {
-        ...mapCreateItemData(ApiDataItem),
-        used_in: mapCreateComponentData(used_in),
-        recycle_from: mapCreateComponentData(recycle_from),
-        recycle_components: mapCreateComponentData(recycle_components),
-        components: mapCreateComponentData(components),
-      },
-      update: {
-        ...mapUpsertItemData(ApiDataItem),
-        used_in: mapDeleteAndUpsertComponentData(id, used_in),
-        recycle_from: mapDeleteAndUpsertComponentData(id, recycle_from),
-        recycle_components: mapDeleteAndUpsertComponentData(
-          id,
-          recycle_components,
-        ),
-        components: mapDeleteAndUpsertComponentData(id, components ?? []),
-      },
-    });
-    console.log(`Successfully inserted ${ApiDataItem.id}`);
-  } catch (e) {
-    console.error(`Failed to insert item ${ApiDataItem.id}:`, e);
-  }
 }
