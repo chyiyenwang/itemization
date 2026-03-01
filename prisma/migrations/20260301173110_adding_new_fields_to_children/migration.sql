@@ -1,67 +1,91 @@
 /*
   Warnings:
 
-  - The primary key for the `ItemComponent` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `component_id` on the `ItemComponent` table. All the data in the column will be lost.
-  - The primary key for the `ItemRecycleComponent` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `component_id` on the `ItemRecycleComponent` table. All the data in the column will be lost.
-  - The primary key for the `ItemRecycleFrom` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `component_id` on the `ItemRecycleFrom` table. All the data in the column will be lost.
-  - The primary key for the `ItemUsedIn` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `component_id` on the `ItemUsedIn` table. All the data in the column will be lost.
-  - The required column `pk_id` was added to the `ItemComponent` table with a prisma-level default value. This is not possible if the table is not empty. Please add this column as optional, then populate it before making it required.
-  - The required column `pk_id` was added to the `ItemRecycleComponent` table with a prisma-level default value. This is not possible if the table is not empty. Please add this column as optional, then populate it before making it required.
-  - The required column `pk_id` was added to the `ItemRecycleFrom` table with a prisma-level default value. This is not possible if the table is not empty. Please add this column as optional, then populate it before making it required.
-  - The required column `pk_id` was added to the `ItemUsedIn` table with a prisma-level default value. This is not possible if the table is not empty. Please add this column as optional, then populate it before making it required.
+  - Added the required column `icon` to the `ItemComponent` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `item_type` to the `ItemComponent` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `name` to the `ItemComponent` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `rarity` to the `ItemComponent` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `icon` to the `ItemRecycleComponent` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `item_type` to the `ItemRecycleComponent` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `name` to the `ItemRecycleComponent` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `rarity` to the `ItemRecycleComponent` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `icon` to the `ItemRecycleFrom` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `item_type` to the `ItemRecycleFrom` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `name` to the `ItemRecycleFrom` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `rarity` to the `ItemRecycleFrom` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `icon` to the `ItemUsedIn` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `item_type` to the `ItemUsedIn` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `name` to the `ItemUsedIn` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `rarity` to the `ItemUsedIn` table without a default value. This is not possible if the table is not empty.
 
 */
 -- RedefineTables
 PRAGMA defer_foreign_keys=ON;
 PRAGMA foreign_keys=OFF;
 CREATE TABLE "new_ItemComponent" (
-    "pk_id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "item_id" TEXT NOT NULL,
-    "id" TEXT NOT NULL,
+    "component_id" TEXT NOT NULL,
     "quantity" REAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "icon" TEXT NOT NULL,
+    "item_type" TEXT NOT NULL,
+    "rarity" TEXT NOT NULL,
     CONSTRAINT "ItemComponent_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "Item" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
-INSERT INTO "new_ItemComponent" ("id", "item_id", "quantity") SELECT "id", "item_id", "quantity" FROM "ItemComponent";
+INSERT INTO "new_ItemComponent" ("component_id", "id", "item_id", "quantity") SELECT "component_id", "id", "item_id", "quantity" FROM "ItemComponent";
 DROP TABLE "ItemComponent";
 ALTER TABLE "new_ItemComponent" RENAME TO "ItemComponent";
-CREATE UNIQUE INDEX "ItemComponent_item_id_id_key" ON "ItemComponent"("item_id", "id");
+CREATE UNIQUE INDEX "ItemComponent_item_id_component_id_key" ON "ItemComponent"("item_id", "component_id");
 CREATE TABLE "new_ItemRecycleComponent" (
-    "pk_id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "item_id" TEXT NOT NULL,
-    "id" TEXT NOT NULL,
+    "component_id" TEXT NOT NULL,
     "quantity" REAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "icon" TEXT NOT NULL,
+    "item_type" TEXT NOT NULL,
+    "rarity" TEXT NOT NULL,
     CONSTRAINT "ItemRecycleComponent_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "Item" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
-INSERT INTO "new_ItemRecycleComponent" ("id", "item_id", "quantity") SELECT "id", "item_id", "quantity" FROM "ItemRecycleComponent";
+INSERT INTO "new_ItemRecycleComponent" ("component_id", "id", "item_id", "quantity") SELECT "component_id", "id", "item_id", "quantity" FROM "ItemRecycleComponent";
 DROP TABLE "ItemRecycleComponent";
 ALTER TABLE "new_ItemRecycleComponent" RENAME TO "ItemRecycleComponent";
-CREATE UNIQUE INDEX "ItemRecycleComponent_item_id_id_key" ON "ItemRecycleComponent"("item_id", "id");
+CREATE UNIQUE INDEX "ItemRecycleComponent_item_id_component_id_key" ON "ItemRecycleComponent"("item_id", "component_id");
 CREATE TABLE "new_ItemRecycleFrom" (
-    "pk_id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "item_id" TEXT NOT NULL,
-    "id" TEXT NOT NULL,
+    "component_id" TEXT NOT NULL,
     "quantity" REAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "icon" TEXT NOT NULL,
+    "item_type" TEXT NOT NULL,
+    "rarity" TEXT NOT NULL,
     CONSTRAINT "ItemRecycleFrom_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "Item" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
-INSERT INTO "new_ItemRecycleFrom" ("id", "item_id", "quantity") SELECT "id", "item_id", "quantity" FROM "ItemRecycleFrom";
+INSERT INTO "new_ItemRecycleFrom" ("component_id", "id", "item_id", "quantity") SELECT "component_id", "id", "item_id", "quantity" FROM "ItemRecycleFrom";
 DROP TABLE "ItemRecycleFrom";
 ALTER TABLE "new_ItemRecycleFrom" RENAME TO "ItemRecycleFrom";
-CREATE UNIQUE INDEX "ItemRecycleFrom_item_id_id_key" ON "ItemRecycleFrom"("item_id", "id");
+CREATE UNIQUE INDEX "ItemRecycleFrom_item_id_component_id_key" ON "ItemRecycleFrom"("item_id", "component_id");
 CREATE TABLE "new_ItemUsedIn" (
-    "pk_id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "item_id" TEXT NOT NULL,
-    "id" TEXT NOT NULL,
+    "component_id" TEXT NOT NULL,
     "quantity" REAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "icon" TEXT NOT NULL,
+    "item_type" TEXT NOT NULL,
+    "rarity" TEXT NOT NULL,
     CONSTRAINT "ItemUsedIn_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "Item" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
-INSERT INTO "new_ItemUsedIn" ("id", "item_id", "quantity") SELECT "id", "item_id", "quantity" FROM "ItemUsedIn";
+INSERT INTO "new_ItemUsedIn" ("component_id", "id", "item_id", "quantity") SELECT "component_id", "id", "item_id", "quantity" FROM "ItemUsedIn";
 DROP TABLE "ItemUsedIn";
 ALTER TABLE "new_ItemUsedIn" RENAME TO "ItemUsedIn";
-CREATE UNIQUE INDEX "ItemUsedIn_item_id_id_key" ON "ItemUsedIn"("item_id", "id");
+CREATE UNIQUE INDEX "ItemUsedIn_item_id_component_id_key" ON "ItemUsedIn"("item_id", "component_id");
 CREATE TABLE "new_Stat" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "item_id" TEXT NOT NULL,

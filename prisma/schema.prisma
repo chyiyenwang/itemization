@@ -106,10 +106,15 @@ model Stat {
 }
 
 model ItemComponent {
-  id        String @id @default(cuid())
+  id           String  @id @default(cuid())
   item_id      String
   component_id String
   quantity     Float
+  name         String
+  description  String?
+  icon         String
+  item_type    String
+  rarity       String
 
   component Item @relation("ItemComponent", fields: [item_id], references: [id])
 
@@ -117,10 +122,15 @@ model ItemComponent {
 }
 
 model ItemRecycleComponent {
-  id        String @id @default(cuid())
+  id           String  @id @default(cuid())
   item_id      String
   component_id String
   quantity     Float
+  name         String
+  description  String?
+  icon         String
+  item_type    String
+  rarity       String
 
   component Item @relation("RecycleComponent", fields: [item_id], references: [id])
 
@@ -128,10 +138,15 @@ model ItemRecycleComponent {
 }
 
 model ItemRecycleFrom {
-  id        String @id @default(cuid())
+  id           String  @id @default(cuid())
   item_id      String
   component_id String
   quantity     Float
+  name         String
+  description  String?
+  icon         String
+  item_type    String
+  rarity       String
 
   item Item @relation("RecycleFrom", fields: [item_id], references: [id])
 
@@ -139,10 +154,15 @@ model ItemRecycleFrom {
 }
 
 model ItemUsedIn {
-  id        String @id @default(cuid())
+  id           String  @id @default(cuid())
   item_id      String
   component_id String
   quantity     Float
+  name         String
+  description  String?
+  icon         String
+  item_type    String
+  rarity       String
 
   item Item @relation("UsedIn", fields: [item_id], references: [id])
 
