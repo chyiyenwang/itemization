@@ -9,19 +9,19 @@ const prisma = new PrismaClient({
   adapter,
   omit: {
     itemComponent: {
-      pk_id: true,
+      id: true,
       item_id: true,
     },
     itemRecycleComponent: {
-      pk_id: true,
+      id: true,
       item_id: true,
     },
     itemRecycleFrom: {
-      pk_id: true,
+      id: true,
       item_id: true,
     },
     itemUsedIn: {
-      pk_id: true,
+      id: true,
       item_id: true,
     },
     stat: {
