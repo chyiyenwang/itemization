@@ -53,9 +53,9 @@ const itemMapper = {
     };
   },
 
-  toPrismaCreateComponent(data: Component[]) {
+  toPrismaCreateComponent(components: Component[]) {
     return {
-      create: data.map((c) => {
+      create: components.map((c) => {
         return {
           quantity: c.quantity,
           component: {
@@ -73,14 +73,14 @@ const itemMapper = {
     };
   },
 
-  toPrismaDeleteAndUpsertComponent(id: string, data: Component[]) {
+  toPrismaDeleteAndUpsertComponent(id: string, components: Component[]) {
     return {
       deleteMany: {
         componentId: {
-          notIn: data.map((c) => c.component.id),
+          notIn: components.map((c) => c.component.id),
         },
       },
-      upsert: data.map((comp) => {
+      upsert: components.map((comp) => {
         return {
           where: {
             itemId_componentId: {
