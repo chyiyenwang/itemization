@@ -57,15 +57,17 @@ export async function getItem(id: string): Promise<Item | null> {
   // });
 
   const item = Object.values(items).find((item) => item.id === id);
-  await upsertItem(item as unknown as ApiDataItem);
+  const dbItem = await upsertItem(item as unknown as ApiDataItem);
+
+  // console.log(dbItem);
   // if (item) {
-  // await prisma.item.create({
-  //   data: {
-  //     ...mapCreateItemData(item),
-  //     used_in: mapCreateComponentData(item.used_in)
-  //   }
-  // })
-  // await upsertItem(item as unknown as ApiDataItem);
+  //   await prisma.item.create({
+  //     data: {
+  //       ...mapCreateItemData(item),
+  //       recycle_from: mapCreateComponentData(item.recycle_from)
+  //     }
+  //   })
+  // // await upsertItem(item as unknown as ApiDataItem);
   // }
 
   // console.log(item);
@@ -77,6 +79,7 @@ export async function getItem(id: string): Promise<Item | null> {
   // }
 
   const parsed = BaseItemSchema.safeParse(item);
+  console.log(parsed);
   if (!parsed.success) {
     if (process.env.NODE_ENV !== "production") {
       // console.log(parsed);
@@ -100,27 +103,31 @@ export default async function upsertItem(ApiDataItem: ApiDataItem) {
 
     console.log("inserting...", id);
 
-    await prisma.item.upsert({
+    const item = await prisma.item.upsert({
       where: { id },
       create: {
         ...mapCreateItemData(ApiDataItem),
-        used_in: mapCreateComponentData(used_in),
-        // recycle_from: mapCreateComponentData(recycle_from),
-        // recycle_components: mapCreateComponentData(recycle_components),
-        // components: mapCreateComponentData(components),
+        usedIn: mapCreateComponentData(used_in),
+        recycleFrom: mapCreateComponentData(recycle_from),
+        recycleComponents: mapCreateComponentData(recycle_components),
+        components: mapCreateComponentData(components),
       },
       update: {
         ...mapUpsertItemData(ApiDataItem),
-        used_in: mapDeleteAndUpsertComponentData(id, used_in),
-        // recycle_from: mapDeleteAndUpsertComponentData(id, recycle_from),
-        // recycle_components: mapDeleteAndUpsertComponentData(
-        //   id,
-        //   recycle_components,
-        // ),
-        // components: mapDeleteAndUpsertComponentData(id, components ?? []),
+        usedIn: mapDeleteAndUpsertComponentData(id, used_in),
+        recycleFrom: mapDeleteAndUpsertComponentData(id, recycle_from),
+        recycleComponents: mapDeleteAndUpsertComponentData(
+          id,
+          recycle_components,
+        ),
+        components: mapDeleteAndUpsertComponentData(id, components),
+      },
+      include: {
+        usedIn: selectComponentFields(),
       },
     });
     console.log(`Successfully inserted ${ApiDataItem.id}`);
+    return item;
   } catch (e) {
     console.error(`Failed to insert item ${ApiDataItem.id}:`, e);
   }
@@ -135,7 +142,7 @@ function selectComponentFields() {
           icon: true,
           name: true,
           rarity: true,
-          item_type: true,
+          itemType: true,
           description: true,
         },
       },
@@ -146,13 +153,13 @@ function selectComponentFields() {
 function selectItemFields() {
   return {
     include: {
-      main_item: {
+      component: {
         select: {
           id: true,
           icon: true,
           name: true,
           rarity: true,
-          item_type: true,
+          itemType: true,
           description: true,
         },
       },
