@@ -1,44 +1,45 @@
-import { ApiDataItem, ApiDataComponent, ApiBaseComponent } from "@/app/types";
+import { Component, Item } from "@/app/types";
 
-export function normalizeData(data: ApiDataComponent[]) {
+export function normalizeData(data: Component[]) {
+  console.log(data);
   return data.map((c) => {
     return {
       quantity: c.quantity,
-      component: (c.item ?? c.component) as ApiBaseComponent,
+      component: c.component,
     };
   });
 }
 
-export function mapCreateItemData(item: ApiDataItem) {
+export function mapCreateItemData(item: Item) {
   return {
     id: item.id,
     name: item.name,
     description: item.description,
-    itemType: item.item_type,
+    itemType: item.itemType,
     icon: item.icon,
     rarity: item.rarity,
     value: item.value,
     workbench: item.workbench,
     statBlock: {
-      create: { ...item.stat_block },
+      create: { ...item.statBlock },
     },
-    flavorText: item.flavor_text,
+    flavorText: item.flavorText,
     subcategory: item.subcategory,
-    createdAtApi: item.created_at,
-    updatedAtApi: item.updated_at,
-    shieldType: item.shield_type,
-    lootArea: item.loot_area,
+    createdAtApi: item.createdAt,
+    updatedAtApi: item.updatedAt,
+    shieldType: item.shieldType,
+    lootArea: item.lootArea,
     sources: item.sources,
-    ammoType: item.ammo_type,
+    ammoType: item.ammoType,
   };
 }
 
-export function mapUpsertItemData(item: ApiDataItem) {
+export function mapUpsertItemData(item: Item) {
   return {
     id: item.id,
     name: item.name,
     description: item.description,
-    itemType: item.item_type,
+    itemType: item.itemType,
     icon: item.icon,
     rarity: item.rarity,
     value: item.value,
@@ -46,22 +47,22 @@ export function mapUpsertItemData(item: ApiDataItem) {
     statBlock: {
       upsert: {
         where: { itemId: item.id },
-        create: { ...item.stat_block },
-        update: { ...item.stat_block },
+        create: { ...item.statBlock },
+        update: { ...item.statBlock },
       },
     },
-    flavorText: item.flavor_text,
+    flavorText: item.flavorText,
     subcategory: item.subcategory,
-    createdAtApi: item.created_at,
-    updatedAtApi: item.updated_at,
-    shieldType: item.shield_type,
-    lootArea: item.loot_area,
+    createdAtApi: item.createdAt,
+    updatedAtApi: item.updatedAt,
+    shieldType: item.shieldType,
+    lootArea: item.lootArea,
     sources: item.sources,
-    ammoType: item.ammo_type,
+    ammoType: item.ammoType,
   };
 }
 
-export function mapCreateComponentData(data: ApiDataComponent[]) {
+export function mapCreateComponentData(data: Component[]) {
   const normalized = normalizeData(data);
 
   return {
@@ -73,7 +74,7 @@ export function mapCreateComponentData(data: ApiDataComponent[]) {
             id: c.component.id,
             name: c.component.name,
             description: c.component.description,
-            itemType: c.component.item_type,
+            itemType: c.component.itemType,
             icon: c.component.icon,
             rarity: c.component.rarity,
           },
@@ -83,10 +84,7 @@ export function mapCreateComponentData(data: ApiDataComponent[]) {
   };
 }
 
-export function mapDeleteAndUpsertComponentData(
-  id: string,
-  data: ApiDataComponent[],
-) {
+export function mapDeleteAndUpsertComponentData(id: string, data: Component[]) {
   const normalized = normalizeData(data);
 
   return {
@@ -109,7 +107,7 @@ export function mapDeleteAndUpsertComponentData(
             update: {
               name: comp.component.name,
               description: comp.component.description,
-              itemType: comp.component.item_type,
+              itemType: comp.component.itemType,
               icon: comp.component.icon,
               rarity: comp.component.rarity,
             },
@@ -124,7 +122,7 @@ export function mapDeleteAndUpsertComponentData(
                 id: comp.component.id,
                 name: comp.component.name,
                 description: comp.component.description,
-                itemType: comp.component.item_type,
+                itemType: comp.component.itemType,
                 icon: comp.component.icon,
                 rarity: comp.component.rarity,
               },

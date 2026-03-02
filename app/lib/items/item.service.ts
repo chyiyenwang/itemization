@@ -6,7 +6,7 @@ import {
   mapDeleteAndUpsertComponentData,
 } from "@/app/utils/dataFromApi";
 import { BaseItemSchema } from "./item.schema";
-import { Item, ApiDataItem } from "@/app/types";
+import { Item } from "@/app/types";
 
 import * as items from "@/app/data";
 
@@ -57,7 +57,8 @@ export async function getItem(id: string): Promise<Item | null> {
   // });
 
   const item = Object.values(items).find((item) => item.id === id);
-  const dbItem = await upsertItem(item as unknown as ApiDataItem);
+  const parsed = BaseItemSchema.safeParse(item);
+  const dbItem = await upsertItem(parsed.data as unknown as Item);
 
   // console.log(dbItem);
   // if (item) {
@@ -78,8 +79,8 @@ export async function getItem(id: string): Promise<Item | null> {
   //   item = await upsertItem(item as unknown as ApiDataItem);
   // }
 
-  const parsed = BaseItemSchema.safeParse(item);
-  console.log(parsed);
+  // const parsed = BaseItemSchema.safeParse(item);
+  // console.log(parsed);
   if (!parsed.success) {
     if (process.env.NODE_ENV !== "production") {
       // console.log(parsed);
@@ -96,31 +97,31 @@ export async function getItem(id: string): Promise<Item | null> {
   return parsed.data;
 }
 
-export default async function upsertItem(ApiDataItem: ApiDataItem) {
+export default async function upsertItem(ApiDataItem: Item) {
   try {
-    const { id, used_in, recycle_from, recycle_components, components } =
+    const { id, usedIn, recycleFrom, recycleComponents, components } =
       ApiDataItem;
 
+    console.log(ApiDataItem);
     console.log("inserting...", id);
-
     const item = await prisma.item.upsert({
       where: { id },
       create: {
         ...mapCreateItemData(ApiDataItem),
-        usedIn: mapCreateComponentData(used_in),
-        recycleFrom: mapCreateComponentData(recycle_from),
-        recycleComponents: mapCreateComponentData(recycle_components),
-        components: mapCreateComponentData(components),
+        usedIn: mapCreateComponentData(usedIn),
+        recycleFrom: mapCreateComponentData(recycleFrom),
+        // recycleComponents: mapCreateComponentData(recycleComponents),
+        // components: mapCreateComponentData(components),
       },
       update: {
         ...mapUpsertItemData(ApiDataItem),
-        usedIn: mapDeleteAndUpsertComponentData(id, used_in),
-        recycleFrom: mapDeleteAndUpsertComponentData(id, recycle_from),
-        recycleComponents: mapDeleteAndUpsertComponentData(
-          id,
-          recycle_components,
-        ),
-        components: mapDeleteAndUpsertComponentData(id, components),
+        usedIn: mapDeleteAndUpsertComponentData(id, usedIn),
+        recycleFrom: mapDeleteAndUpsertComponentData(id, recycleFrom),
+        // recycleComponents: mapDeleteAndUpsertComponentData(
+        //   id,
+        //   recycleComponents,
+        // ),
+        // components: mapDeleteAndUpsertComponentData(id, components),
       },
       include: {
         usedIn: selectComponentFields(),

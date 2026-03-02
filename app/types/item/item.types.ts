@@ -14,8 +14,18 @@ export interface Item {
     weight: number;
     stackSize: number;
   };
-  components?: Component[];
-  recycleComponents?: Component[];
-  recycleFrom?: Component[];
-  usedIn?: Component[];
+  workbench?: string;
+  flavorText?: string;
+  subcategory?: string;
+  createdAtApi?: Date;
+  updatedAtApi?: Date;
+  shieldType?: string;
+  sources?: string;
+  ammoType?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  components: Component[];
+  recycleComponents: Component[];
+  recycleFrom: Component[];
+  usedIn: Component[];
 }
