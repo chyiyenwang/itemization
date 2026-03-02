@@ -14,20 +14,20 @@ model Item {
   id          String  @id
   name        String
   description String?
-  itemType   String
+  itemType    String
   // loadout_slots Loadout[]
   icon        String
   rarity      String
   value       Int?
 
   workbench   String? // TODO: Look into this
-  statBlock  Stat?
-  flavorText String?
+  statBlock   Stat?
+  flavorText  String?
   subcategory String?
-  shieldType String?
-  lootArea   String?
+  shieldType  String?
+  lootArea    String?
   sources     String? // TODO: Look into this
-  ammoType   String?
+  ammoType    String?
   // locations [] // TODO: Look into this
   // guide_links [] // TODO: Look into this
 
@@ -40,16 +40,16 @@ model Item {
   updatedAt DateTime @updatedAt
 
   // Relations
-  components      ItemComponent[] @relation("ItemComponent")
+  components     ItemComponent[] @relation("ItemComponent")
   mainComponents ItemComponent[] @relation("MainComponentItemComponent")
 
-  recycleComponents                ItemRecycleComponent[] @relation("RecycleComponent")
+  recycleComponents              ItemRecycleComponent[] @relation("RecycleComponent")
   mainComponentRecycleComponents ItemRecycleComponent[] @relation("MainComponentRecycleComponent")
 
-  recycleFrom           ItemRecycleFrom[] @relation("RecycleFrom")
+  recycleFrom         ItemRecycleFrom[] @relation("RecycleFrom")
   mainItemRecycleFrom ItemRecycleFrom[] @relation("MainItemRecycleFrom")
 
-  usedIn           ItemUsedIn[] @relation("UsedIn")
+  usedIn         ItemUsedIn[] @relation("UsedIn")
   mainItemUsedIn ItemUsedIn[] @relation("MainItemUsedIn")
 
   @@index([itemType])
@@ -58,7 +58,7 @@ model Item {
 
 model Stat {
   id                            String  @id @default(cuid())
-  itemId                       String  @unique
+  itemId                        String  @unique
   item                          Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
   range                         Float   @default(0)
   damage                        Float   @default(0)
@@ -113,10 +113,10 @@ model Stat {
 }
 
 model ItemComponent {
-  id           String @id @default(cuid())
+  id          String @id @default(cuid())
   itemId      String
   componentId String
-  quantity     Float
+  quantity    Float
 
   item      Item @relation("ItemComponent", fields: [itemId], references: [id])
   component Item @relation("MainComponentItemComponent", fields: [componentId], references: [id])
@@ -125,10 +125,10 @@ model ItemComponent {
 }
 
 model ItemRecycleComponent {
-  id           String @id @default(cuid())
+  id          String @id @default(cuid())
   itemId      String
   componentId String
-  quantity     Float
+  quantity    Float
 
   item      Item @relation("RecycleComponent", fields: [itemId], references: [id])
   component Item @relation("MainComponentRecycleComponent", fields: [componentId], references: [id])
@@ -137,10 +137,10 @@ model ItemRecycleComponent {
 }
 
 model ItemRecycleFrom {
-  id           String @id @default(cuid())
+  id          String @id @default(cuid())
   itemId      String
   componentId String
-  quantity     Float
+  quantity    Float
 
   item      Item @relation("RecycleFrom", fields: [itemId], references: [id])
   component Item @relation("MainItemRecycleFrom", fields: [componentId], references: [id])
@@ -149,10 +149,10 @@ model ItemRecycleFrom {
 }
 
 model ItemUsedIn {
-  id           String @id @default(cuid())
+  id          String @id @default(cuid())
   itemId      String
   componentId String
-  quantity     Float
+  quantity    Float
 
   item      Item @relation("UsedIn", fields: [itemId], references: [id])
   component Item @relation("MainItemUsedIn", fields: [componentId], references: [id])

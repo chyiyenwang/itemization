@@ -1,10 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
-import {
-  mapCreateItemData,
-  mapUpsertItemData,
-  mapCreateComponentData,
-  mapDeleteAndUpsertComponentData,
-} from "@/app/utils/dataFromApi";
+import itemMapper from "./item.mapper";
 import { BaseItemSchema } from "./item.schema";
 import { Item } from "@/app/types";
 
@@ -42,8 +37,6 @@ export async function getItem(id: string): Promise<Item | null> {
 
   // let item;
   // look up item in the db
-  const selectItem = selectItemFields();
-  const selectComponent = selectComponentFields();
   // item = await prisma.item.findUnique({
   //   where: { id },
   //   include: {
@@ -64,8 +57,8 @@ export async function getItem(id: string): Promise<Item | null> {
   // if (item) {
   //   await prisma.item.create({
   //     data: {
-  //       ...mapCreateItemData(item),
-  //       recycle_from: mapCreateComponentData(item.recycle_from)
+  //       ...mapToPrismaCreateItem(item),
+  //       recycle_from: mapToPrismaCreateComponent(item.recycle_from)
   //     }
   //   })
   // // await upsertItem(item as unknown as ApiDataItem);
@@ -101,30 +94,39 @@ export default async function upsertItem(ApiDataItem: Item) {
   try {
     const { id, usedIn, recycleFrom, recycleComponents, components } =
       ApiDataItem;
+    const {
+      toPrismaCreateItem,
+      toPrismaCreateComponent,
+      toPrismaUpsertItem,
+      toPrismaDeleteAndUpsertComponent,
+    } = itemMapper;
 
-    console.log(ApiDataItem);
     console.log("inserting...", id);
+
     const item = await prisma.item.upsert({
       where: { id },
       create: {
-        ...mapCreateItemData(ApiDataItem),
-        usedIn: mapCreateComponentData(usedIn),
-        recycleFrom: mapCreateComponentData(recycleFrom),
-        // recycleComponents: mapCreateComponentData(recycleComponents),
-        // components: mapCreateComponentData(components),
+        ...toPrismaCreateItem(ApiDataItem),
+        usedIn: toPrismaCreateComponent(usedIn),
+        recycleFrom: toPrismaCreateComponent(recycleFrom),
+        recycleComponents: toPrismaCreateComponent(recycleComponents),
+        components: toPrismaCreateComponent(components),
       },
       update: {
-        ...mapUpsertItemData(ApiDataItem),
-        usedIn: mapDeleteAndUpsertComponentData(id, usedIn),
-        recycleFrom: mapDeleteAndUpsertComponentData(id, recycleFrom),
-        // recycleComponents: mapDeleteAndUpsertComponentData(
-        //   id,
-        //   recycleComponents,
-        // ),
-        // components: mapDeleteAndUpsertComponentData(id, components),
+        ...toPrismaUpsertItem(ApiDataItem),
+        usedIn: toPrismaDeleteAndUpsertComponent(id, usedIn),
+        recycleFrom: toPrismaDeleteAndUpsertComponent(id, recycleFrom),
+        recycleComponents: toPrismaDeleteAndUpsertComponent(
+          id,
+          recycleComponents,
+        ),
+        components: toPrismaDeleteAndUpsertComponent(id, components),
       },
       include: {
-        usedIn: selectComponentFields(),
+        usedIn: includeComponentDetails,
+        recycleFrom: includeComponentDetails,
+        recycleComponents: includeComponentDetails,
+        components: includeComponentDetails,
       },
     });
     console.log(`Successfully inserted ${ApiDataItem.id}`);
@@ -134,39 +136,20 @@ export default async function upsertItem(ApiDataItem: Item) {
   }
 }
 
-function selectComponentFields() {
-  return {
-    include: {
-      component: {
-        select: {
-          id: true,
-          icon: true,
-          name: true,
-          rarity: true,
-          itemType: true,
-          description: true,
-        },
+const includeComponentDetails = {
+  include: {
+    component: {
+      select: {
+        id: true,
+        icon: true,
+        name: true,
+        rarity: true,
+        itemType: true,
+        description: true,
       },
     },
-  };
-}
-
-function selectItemFields() {
-  return {
-    include: {
-      component: {
-        select: {
-          id: true,
-          icon: true,
-          name: true,
-          rarity: true,
-          itemType: true,
-          description: true,
-        },
-      },
-    },
-  };
-}
+  },
+};
 
 const STALE_TIME_DAYS = 7;
 function isStale(lastFetched: Date) {
