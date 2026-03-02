@@ -13,12 +13,12 @@ datasource db {
 model Item {
   id          String @id
   name        String
-  description String
+  description String?
   item_type   String
   // loadout_slots Loadout[]
   icon        String
   rarity      String
-  value       Int
+  value       Int?
 
   workbench   String? // TODO: Look into this
   stat_block  Stat?
@@ -41,9 +41,16 @@ model Item {
 
   // Relations
   components         ItemComponent[]        @relation("ItemComponent")
+  main_components   ItemComponent[]         @relation("MainComponentItemComponent")
+
   recycle_components ItemRecycleComponent[] @relation("RecycleComponent")
+  main_component_recycle_components ItemRecycleComponent[] @relation("MainComponentRecycleComponent")
+
   recycle_from       ItemRecycleFrom[]      @relation("RecycleFrom")
+  main_item_recycle_from ItemRecycleFrom[]  @relation("MainItemRecycleFrom")
+
   used_in            ItemUsedIn[]           @relation("UsedIn")
+  main_item_used_in  ItemUsedIn[]           @relation("MainItemUsedIn")
 
   @@index([item_type])
   @@index([rarity])
@@ -110,13 +117,9 @@ model ItemComponent {
   item_id      String
   component_id String
   quantity     Float
-  name         String
-  description  String?
-  icon         String
-  item_type    String
-  rarity       String
 
   component Item @relation("ItemComponent", fields: [item_id], references: [id])
+  main_component Item @relation("MainComponentItemComponent", fields: [component_id], references: [id])
 
   @@unique([item_id, component_id])
 }
@@ -126,13 +129,9 @@ model ItemRecycleComponent {
   item_id      String
   component_id String
   quantity     Float
-  name         String
-  description  String?
-  icon         String
-  item_type    String
-  rarity       String
 
   component Item @relation("RecycleComponent", fields: [item_id], references: [id])
+  main_component Item @relation("MainComponentRecycleComponent", fields: [component_id], references: [id])
 
   @@unique([item_id, component_id])
 }
@@ -142,13 +141,9 @@ model ItemRecycleFrom {
   item_id      String
   component_id String
   quantity     Float
-  name         String
-  description  String?
-  icon         String
-  item_type    String
-  rarity       String
 
   item Item @relation("RecycleFrom", fields: [item_id], references: [id])
+  main_item Item @relation("MainItemRecycleFrom", fields: [component_id], references: [id])
 
   @@unique([item_id, component_id])
 }
@@ -158,13 +153,9 @@ model ItemUsedIn {
   item_id      String
   component_id String
   quantity     Float
-  name         String
-  description  String?
-  icon         String
-  item_type    String
-  rarity       String
 
   item Item @relation("UsedIn", fields: [item_id], references: [id])
+  main_item Item @relation("MainItemUsedIn", fields: [component_id], references: [id])
 
   @@unique([item_id, component_id])
 }

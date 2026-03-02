@@ -40,28 +40,41 @@ export async function getItem(id: string): Promise<Item | null> {
   // console.log(parsed.data);
   // return parsed.data;
 
-  let item;
+  // let item;
   // look up item in the db
   const selectItem = selectItemFields();
   const selectComponent = selectComponentFields();
-  item = await prisma.item.findUnique({
-    where: { id },
-    include: {
-      // TODO: fix this because sometimes the data comes in as 0 or "" or "Medium, Light" (looting-mk-3-survivor)
-      stat_block: true,
-      components: { ...selectComponent },
-      used_in: { ...selectItem },
-      recycle_components: { ...selectComponent },
-      recycle_from: { ...selectItem },
-    },
-  });
-  console.log(item);
-  if (!item) {
-    item = Object.values(items).find((item) => item.id === id);
-    await upsertItem(item as unknown as ApiDataItem);
-  } else if (item && isStale(item.last_fetched)) {
-    item = await upsertItem(item as unknown as ApiDataItem);
-  }
+  // item = await prisma.item.findUnique({
+  //   where: { id },
+  //   include: {
+  //     // TODO: fix this because sometimes the data comes in as 0 or "" or "Medium, Light" (looting-mk-3-survivor)
+  //     stat_block: true,
+  //     used_in: { ...selectItem },
+  //     // components: { ...selectComponent },
+  //     // recycle_components: { ...selectComponent },
+  //     // recycle_from: { ...selectItem },
+  //   },
+  // });
+
+  const item = Object.values(items).find((item) => item.id === id);
+  await upsertItem(item as unknown as ApiDataItem);
+  // if (item) {
+  // await prisma.item.create({
+  //   data: {
+  //     ...mapCreateItemData(item),
+  //     used_in: mapCreateComponentData(item.used_in)
+  //   }
+  // })
+  // await upsertItem(item as unknown as ApiDataItem);
+  // }
+
+  // console.log(item);
+  // if (!item) {
+  //   item = Object.values(items).find((item) => item.id === id);
+  //   await upsertItem(item as unknown as ApiDataItem);
+  // } else if (item && isStale(item.last_fetched)) {
+  //   item = await upsertItem(item as unknown as ApiDataItem);
+  // }
 
   const parsed = BaseItemSchema.safeParse(item);
   if (!parsed.success) {
@@ -92,19 +105,19 @@ export default async function upsertItem(ApiDataItem: ApiDataItem) {
       create: {
         ...mapCreateItemData(ApiDataItem),
         used_in: mapCreateComponentData(used_in),
-        recycle_from: mapCreateComponentData(recycle_from),
-        recycle_components: mapCreateComponentData(recycle_components),
-        components: mapCreateComponentData(components),
+        // recycle_from: mapCreateComponentData(recycle_from),
+        // recycle_components: mapCreateComponentData(recycle_components),
+        // components: mapCreateComponentData(components),
       },
       update: {
         ...mapUpsertItemData(ApiDataItem),
         used_in: mapDeleteAndUpsertComponentData(id, used_in),
-        recycle_from: mapDeleteAndUpsertComponentData(id, recycle_from),
-        recycle_components: mapDeleteAndUpsertComponentData(
-          id,
-          recycle_components,
-        ),
-        components: mapDeleteAndUpsertComponentData(id, components ?? []),
+        // recycle_from: mapDeleteAndUpsertComponentData(id, recycle_from),
+        // recycle_components: mapDeleteAndUpsertComponentData(
+        //   id,
+        //   recycle_components,
+        // ),
+        // components: mapDeleteAndUpsertComponentData(id, components ?? []),
       },
     });
     console.log(`Successfully inserted ${ApiDataItem.id}`);
@@ -133,7 +146,7 @@ function selectComponentFields() {
 function selectItemFields() {
   return {
     include: {
-      item: {
+      main_item: {
         select: {
           id: true,
           icon: true,

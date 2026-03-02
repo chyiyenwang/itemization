@@ -1,7 +1,6 @@
 import { ApiDataItem, ApiDataComponent, ApiBaseComponent } from "@/app/types";
 
 export function normalizeData(data: ApiDataComponent[]) {
-  console.log(data);
   return data.map((c) => {
     return {
       quantity: c.quantity,
@@ -66,14 +65,21 @@ export function mapCreateComponentData(data: ApiDataComponent[]) {
   const normalized = normalizeData(data);
 
   return {
-    createMany: {
-      data: normalized.map((c) => {
-        return {
-          component_id: c.component.id,
-          quantity: c.quantity,
-        };
-      }),
-    },
+    create: normalized.map((c) => {
+      return {
+        quantity: c.quantity,
+        main_item: {
+          create: {
+            id: c.component.id,
+            name: c.component.name,
+            description: c.component.description,
+            item_type: c.component.item_type,
+            icon: c.component.icon,
+            rarity: c.component.rarity,
+          },
+        },
+      };
+    }),
   };
 }
 
@@ -97,10 +103,31 @@ export function mapDeleteAndUpsertComponentData(
             component_id: comp.component.id,
           },
         },
-        update: { quantity: comp.quantity },
-        create: {
-          component_id: comp.component.id,
+        update: {
           quantity: comp.quantity,
+          main_item: {
+            update: {
+              id: comp.component.id,
+              name: comp.component.name,
+              description: comp.component.description,
+              item_type: comp.component.item_type,
+              icon: comp.component.icon,
+              rarity: comp.component.rarity,
+            },
+          },
+        },
+        create: {
+          quantity: comp.quantity,
+          main_item: {
+            create: {
+              id: comp.component.id,
+              name: comp.component.name,
+              description: comp.component.description,
+              item_type: comp.component.item_type,
+              icon: comp.component.icon,
+              rarity: comp.component.rarity,
+            },
+          },
         },
       };
     }),
