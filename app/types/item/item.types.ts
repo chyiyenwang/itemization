@@ -4,7 +4,7 @@ import { Component } from "./component.types";
 export interface Item {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   lootArea: string | null;
   rarity: RarityType;
   icon: string;
@@ -17,13 +17,13 @@ export interface Item {
   workbench?: string;
   flavorText?: string;
   subcategory?: string;
-  createdAtApi?: Date;
-  updatedAtApi?: Date;
   shieldType?: string;
   sources?: string;
   ammoType?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  createdAtApi?: Date;
+  updatedAtApi?: Date;
   components: Component[];
   recycleComponents: Component[];
   recycleFrom: Component[];

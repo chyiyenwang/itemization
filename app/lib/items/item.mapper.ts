@@ -16,8 +16,8 @@ const itemMapper = {
       },
       flavorText: item.flavorText,
       subcategory: item.subcategory,
-      createdAtApi: item.createdAt,
-      updatedAtApi: item.updatedAt,
+      createdAtApi: item.createdAtApi,
+      updatedAtApi: item.updatedAtApi,
       shieldType: item.shieldType,
       lootArea: item.lootArea,
       sources: item.sources,
@@ -44,8 +44,8 @@ const itemMapper = {
       },
       flavorText: item.flavorText,
       subcategory: item.subcategory,
-      createdAtApi: item.createdAt,
-      updatedAtApi: item.updatedAt,
+      createdAtApi: item.createdAtApi,
+      updatedAtApi: item.updatedAtApi,
       shieldType: item.shieldType,
       lootArea: item.lootArea,
       sources: item.sources,
@@ -59,13 +59,16 @@ const itemMapper = {
         return {
           quantity: c.quantity,
           component: {
-            create: {
-              id: c.component.id,
-              name: c.component.name,
-              description: c.component.description,
-              itemType: c.component.itemType,
-              icon: c.component.icon,
-              rarity: c.component.rarity,
+            connectOrCreate: {
+              where: { id: c.component.id },
+              create: {
+                id: c.component.id,
+                name: c.component.name,
+                description: c.component.description,
+                itemType: c.component.itemType,
+                icon: c.component.icon,
+                rarity: c.component.rarity,
+              },
             },
           },
         };

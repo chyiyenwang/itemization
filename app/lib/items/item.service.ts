@@ -35,59 +35,42 @@ export async function getItem(id: string): Promise<Item | null> {
   // console.log(parsed.data);
   // return parsed.data;
 
-  // let item;
-  // look up item in the db
-  // item = await prisma.item.findUnique({
-  //   where: { id },
-  //   include: {
-  //     // TODO: fix this because sometimes the data comes in as 0 or "" or "Medium, Light" (looting-mk-3-survivor)
-  //     stat_block: true,
-  //     used_in: { ...selectItem },
-  //     // components: { ...selectComponent },
-  //     // recycle_components: { ...selectComponent },
-  //     // recycle_from: { ...selectItem },
-  //   },
-  // });
+  let item = await prisma.item.findUnique({
+    where: { id },
+    include: {
+      statBlock: true,
+      usedIn: includeComponentDetails,
+      components: includeComponentDetails,
+      recycleComponents: includeComponentDetails,
+      recycleFrom: includeComponentDetails,
+    },
+  });
 
-  const item = Object.values(items).find((item) => item.id === id);
-  const parsed = BaseItemSchema.safeParse(item);
-  const dbItem = await upsertItem(parsed.data as unknown as Item);
+  if (!item || isStale(item.lastFetched)) {
+    const itemFromApi = Object.values(items).find((item) => item.id === id); // make a request to the API
+    const parsed = BaseItemSchema.safeParse(itemFromApi);
 
-  // console.log(dbItem);
-  // if (item) {
-  //   await prisma.item.create({
-  //     data: {
-  //       ...mapToPrismaCreateItem(item),
-  //       recycle_from: mapToPrismaCreateComponent(item.recycle_from)
-  //     }
-  //   })
-  // // await upsertItem(item as unknown as ApiDataItem);
-  // }
-
-  // console.log(item);
-  // if (!item) {
-  //   item = Object.values(items).find((item) => item.id === id);
-  //   await upsertItem(item as unknown as ApiDataItem);
-  // } else if (item && isStale(item.last_fetched)) {
-  //   item = await upsertItem(item as unknown as ApiDataItem);
-  // }
-
-  // const parsed = BaseItemSchema.safeParse(item);
-  // console.log(parsed);
-  if (!parsed.success) {
-    if (process.env.NODE_ENV !== "production") {
-      // console.log(parsed);
-      console.error(
-        "Validation errors:",
-        parsed.error.issues.map((issue) => {
-          (issue.message, issue.path);
-        }),
-      );
+    if (!parsed.success) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error(
+          "Validation errors:",
+          parsed.error.issues.map((issue) => {
+            (issue.message, issue.path);
+          }),
+        );
+      }
+      return null;
     }
+
+    item = await upsertItem(parsed.data as Item);
+  }
+
+  if (!item) {
+    console.error(`Could not fetch or upsert item`);
     return null;
   }
 
-  return parsed.data;
+  return item as Item;
 }
 
 export default async function upsertItem(ApiDataItem: Item) {
@@ -123,6 +106,7 @@ export default async function upsertItem(ApiDataItem: Item) {
         components: toPrismaDeleteAndUpsertComponent(id, components),
       },
       include: {
+        statBlock: true,
         usedIn: includeComponentDetails,
         recycleFrom: includeComponentDetails,
         recycleComponents: includeComponentDetails,
@@ -132,7 +116,8 @@ export default async function upsertItem(ApiDataItem: Item) {
     console.log(`Successfully inserted ${ApiDataItem.id}`);
     return item;
   } catch (e) {
-    console.error(`Failed to insert item ${ApiDataItem.id}:`, e);
+    console.error(`Failed to insert item:`, e);
+    return null;
   }
 }
 
