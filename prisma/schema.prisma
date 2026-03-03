@@ -118,7 +118,7 @@ model ItemComponent {
   componentId String
   quantity    Float
 
-  item      Item @relation("ItemComponent", fields: [itemId], references: [id], onDelete: Cascade)
+  item      Item @relation("ItemComponent", fields: [itemId], references: [id])
   component Item @relation("MainComponentItemComponent", fields: [componentId], references: [id])
 
   @@unique([itemId, componentId])
@@ -130,7 +130,7 @@ model ItemRecycleComponent {
   componentId String
   quantity    Float
 
-  item      Item @relation("RecycleComponent", fields: [itemId], references: [id], onDelete: Cascade)
+  item      Item @relation("RecycleComponent", fields: [itemId], references: [id])
   component Item @relation("MainComponentRecycleComponent", fields: [componentId], references: [id])
 
   @@unique([itemId, componentId])
@@ -142,7 +142,7 @@ model ItemRecycleFrom {
   componentId String
   quantity    Float
 
-  item      Item @relation("RecycleFrom", fields: [itemId], references: [id], onDelete: Cascade)
+  item      Item @relation("RecycleFrom", fields: [itemId], references: [id])
   component Item @relation("MainItemRecycleFrom", fields: [componentId], references: [id])
 
   @@unique([itemId, componentId])
@@ -154,7 +154,7 @@ model ItemUsedIn {
   componentId String
   quantity    Float
 
-  item      Item @relation("UsedIn", fields: [itemId], references: [id], onDelete: Cascade)
+  item      Item @relation("UsedIn", fields: [itemId], references: [id])
   component Item @relation("MainItemUsedIn", fields: [componentId], references: [id])
 
   @@unique([itemId, componentId])

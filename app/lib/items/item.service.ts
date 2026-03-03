@@ -5,36 +5,16 @@ import { Item } from "@/app/types";
 
 import * as items from "@/app/data";
 
+function getRequiredStatBlock(stat: any) {
+  return (
+    stat ?? {
+      weight: null,
+      stackSize: null,
+    }
+  );
+}
+
 export async function getItem(id: string): Promise<Item | null> {
-  // const res = await fetch(
-  //   `https://metaforge.app/api/arc-raiders/items?id=${id}&includeComponents=true`,
-  //   {
-  //     cache: "force-cache",
-  //     next: {
-  //       revalidate: 60 * 60,
-  //     },
-  //   },
-  // );
-
-  // if (!res.ok) {
-  //   console.error("Failed to fetch item:", res.statusText);
-  //   return null;
-  // }
-
-  // const data = (await res.json()).data[0];
-  // console.log(data);
-  // const parsed = BaseItemSchema.safeParse(data);
-  // console.log(parsed);
-  // if (!parsed.success) {
-  //   console.error(
-  //     "Validation errors:",
-  //     parsed.error.issues.map((issue) => issue.message),
-  //   );
-  //   return null;
-  // }
-  // console.log(parsed.data);
-  // return parsed.data;
-
   let item = await prisma.item.findUnique({
     where: { id },
     include: {
@@ -46,8 +26,29 @@ export async function getItem(id: string): Promise<Item | null> {
     },
   });
 
-  if (!item || isStale(item.lastFetched)) {
-    const itemFromApi = Object.values(items).find((item) => item.id === id); // make a request to the API
+  if (!item || !item.statBlock || isStale(item.lastFetched)) {
+    console.log("sdfs");
+    // real API call to fetch item data, then upsert into DB
+    const res = await fetch(
+      `https://metaforge.app/api/arc-raiders/items?id=${id}&includeComponents=true`,
+      {
+        cache: "force-cache",
+        next: {
+          revalidate: 60 * 60,
+        },
+      },
+    );
+
+    if (!res.ok) {
+      console.error("Failed to fetch item:", res.statusText);
+      return null;
+    }
+    console.log(res);
+    const itemFromApi = (await res.json()).data[0];
+
+    // fake API call - find item from local data
+    // const itemFromApi = Object.values(items).find((item) => item.id === id);
+
     const parsed = BaseItemSchema.safeParse(itemFromApi);
 
     if (!parsed.success) {
@@ -70,7 +71,12 @@ export async function getItem(id: string): Promise<Item | null> {
     return null;
   }
 
-  return item as Item;
+  const statBlock = getRequiredStatBlock(item.statBlock);
+
+  return {
+    ...item,
+    statBlock,
+  } as Item;
 }
 
 export default async function upsertItem(ApiDataItem: Item) {
