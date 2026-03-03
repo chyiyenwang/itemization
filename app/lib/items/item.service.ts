@@ -5,6 +5,7 @@ import { Item } from "@/app/types";
 
 import * as items from "@/app/data";
 
+// TODO: fix the any types in this file, especially the type assertion in getItem function. Maybe we can add a separate type for the API response and validate against that instead of the internal Item type which has some differences (e.g. statBlock can be null from API but is required in our internal type)
 function getRequiredStatBlock(stat: any) {
   return (
     stat ?? {
@@ -42,7 +43,7 @@ export async function getItem(id: string): Promise<Item | null> {
       console.error("Failed to fetch item:", res.statusText);
       return null;
     }
-    console.log(res);
+
     const itemFromApi = (await res.json()).data[0];
 
     // fake API call - find item from local data
@@ -62,6 +63,7 @@ export async function getItem(id: string): Promise<Item | null> {
       return null;
     }
 
+    // TODO: fix this type assertion
     item = await upsertItem(parsed.data as Item);
   }
 
@@ -72,6 +74,7 @@ export async function getItem(id: string): Promise<Item | null> {
 
   const statBlock = getRequiredStatBlock(item.statBlock);
 
+  // TODO: fix this type assertion
   return {
     ...item,
     statBlock,
