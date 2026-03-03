@@ -27,7 +27,6 @@ export async function getItem(id: string): Promise<Item | null> {
   });
 
   if (!item || !item.statBlock || isStale(item.lastFetched)) {
-    console.log("sdfs");
     // real API call to fetch item data, then upsert into DB
     const res = await fetch(
       `https://metaforge.app/api/arc-raiders/items?id=${id}&includeComponents=true`,
@@ -90,7 +89,9 @@ export default async function upsertItem(ApiDataItem: Item) {
       toPrismaDeleteAndUpsertComponent,
     } = itemMapper;
 
-    console.log("inserting...", id);
+    if (process.env.NODE_ENV !== "production") {
+      console.log("inserting...", id);
+    }
 
     const item = await prisma.item.upsert({
       where: { id },
@@ -119,7 +120,9 @@ export default async function upsertItem(ApiDataItem: Item) {
         components: includeComponentDetails,
       },
     });
-    console.log(`Successfully inserted ${ApiDataItem.id}`);
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`Successfully inserted ${ApiDataItem.id}`);
+    }
     return item;
   } catch (e) {
     console.error(`Failed to insert item:`, e);
