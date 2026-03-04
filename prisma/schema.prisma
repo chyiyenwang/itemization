@@ -13,7 +13,7 @@ datasource db {
 model Item {
   id          String  @id
   name        String
-  description String?
+  description String
   itemType    String
   // loadout_slots Loadout[]
   icon        String
