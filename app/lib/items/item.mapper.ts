@@ -1,5 +1,5 @@
 import { ApiItem } from "./item.schema";
-import { Item, RarityType } from "@/app/types";
+import { RarityType } from "@/app/types";
 
 export function mapApiItemToDomain(raw: ApiItem) {
   return {

@@ -75,45 +75,37 @@ export async function getItem(id: string): Promise<Item | null> {
 }
 
 export default async function upsertItem(ApiDataItem: Item) {
-  try {
-    const { id, usedIn, recycleFrom, recycleComponents, components } =
-      ApiDataItem;
-    const {
-      toPrismaCreateItem,
-      toPrismaCreateComponent,
-      toPrismaUpsertItem,
-      toPrismaDeleteAndUpsertComponent,
-    } = itemMapper;
+  const { id, usedIn, recycleFrom, recycleComponents, components } =
+    ApiDataItem;
+  const {
+    toPrismaCreateItem,
+    toPrismaCreateComponent,
+    toPrismaUpsertItem,
+    toPrismaDeleteAndUpsertComponent,
+  } = itemMapper;
 
+  const createData = {
+    ...toPrismaCreateItem(ApiDataItem),
+    usedIn: toPrismaCreateComponent(usedIn),
+    recycleFrom: toPrismaCreateComponent(recycleFrom),
+    recycleComponents: toPrismaCreateComponent(recycleComponents),
+    components: toPrismaCreateComponent(components),
+  };
+
+  const updateData = {
+    ...toPrismaUpsertItem(ApiDataItem),
+    usedIn: toPrismaDeleteAndUpsertComponent(id, usedIn),
+    recycleFrom: toPrismaDeleteAndUpsertComponent(id, recycleFrom),
+    recycleComponents: toPrismaDeleteAndUpsertComponent(id, recycleComponents),
+    components: toPrismaDeleteAndUpsertComponent(id, components),
+  };
+
+  try {
     if (process.env.NODE_ENV !== "production") {
       console.log("inserting...", id);
     }
 
-    const createData = {
-      ...toPrismaCreateItem(ApiDataItem),
-      usedIn: toPrismaCreateComponent(usedIn),
-      recycleFrom: toPrismaCreateComponent(recycleFrom),
-      recycleComponents: toPrismaCreateComponent(recycleComponents),
-      components: toPrismaCreateComponent(components),
-    };
-
-    const updateData = {
-      ...toPrismaUpsertItem(ApiDataItem),
-      usedIn: toPrismaDeleteAndUpsertComponent(id, usedIn),
-      recycleFrom: toPrismaDeleteAndUpsertComponent(id, recycleFrom),
-      recycleComponents: toPrismaDeleteAndUpsertComponent(
-        id,
-        recycleComponents,
-      ),
-      components: toPrismaDeleteAndUpsertComponent(id, components),
-    };
-
-    const item = await upsertItemRecord(id, createData, updateData);
-
-    if (process.env.NODE_ENV !== "production") {
-      console.log(`Successfully inserted ${ApiDataItem.id}`);
-    }
-    return item;
+    return await upsertItemRecord(id, createData, updateData);
   } catch (e) {
     console.error(`Failed to insert item:`, e);
     return null;
