@@ -1,4 +1,4 @@
-import { itemMapper } from "./item.persistence";
+import { inputBuilder } from "./item.persistence";
 import { BaseItemSchema } from "./item.schema";
 import { Item } from "@/app/types";
 import { findUniqueItem, upsertItemRecord } from "./item.repository";
@@ -75,37 +75,17 @@ export async function getItem(id: string): Promise<Item | null> {
 }
 
 export default async function upsertItem(ApiDataItem: Item) {
-  const { id, usedIn, recycleFrom, recycleComponents, components } =
-    ApiDataItem;
-  const {
-    toPrismaCreateItem,
-    toPrismaCreateComponent,
-    toPrismaUpsertItem,
-    toPrismaDeleteAndUpsertComponent,
-  } = itemMapper;
+  const { createInput, updateInput } = inputBuilder;
 
-  const createData = {
-    ...toPrismaCreateItem(ApiDataItem),
-    usedIn: toPrismaCreateComponent(usedIn),
-    recycleFrom: toPrismaCreateComponent(recycleFrom),
-    recycleComponents: toPrismaCreateComponent(recycleComponents),
-    components: toPrismaCreateComponent(components),
-  };
-
-  const updateData = {
-    ...toPrismaUpsertItem(ApiDataItem),
-    usedIn: toPrismaDeleteAndUpsertComponent(id, usedIn),
-    recycleFrom: toPrismaDeleteAndUpsertComponent(id, recycleFrom),
-    recycleComponents: toPrismaDeleteAndUpsertComponent(id, recycleComponents),
-    components: toPrismaDeleteAndUpsertComponent(id, components),
-  };
+  const createdItem = createInput(ApiDataItem);
+  const updatedItem = updateInput(ApiDataItem);
 
   try {
     if (process.env.NODE_ENV !== "production") {
-      console.log("inserting...", id);
+      console.log("inserting...", ApiDataItem.id);
     }
 
-    return await upsertItemRecord(id, createData, updateData);
+    return await upsertItemRecord(ApiDataItem.id, createdItem, updatedItem);
   } catch (e) {
     console.error(`Failed to insert item:`, e);
     return null;

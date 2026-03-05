@@ -1,6 +1,6 @@
 import { Component, Item } from "@/app/types";
 
-export const itemMapper = {
+const itemMapper = {
   toPrismaCreateItem(item: Item) {
     return {
       id: item.id,
@@ -121,6 +121,35 @@ export const itemMapper = {
           },
         };
       }),
+    };
+  },
+};
+
+export const itemBuilder = {
+  createInput(item: Item) {
+    const { usedIn, recycleFrom, recycleComponents, components } = item;
+    const { toPrismaCreateItem, toPrismaCreateComponent } = itemMapper;
+    return {
+      ...toPrismaCreateItem(item),
+      usedIn: toPrismaCreateComponent(usedIn),
+      recycleFrom: toPrismaCreateComponent(recycleFrom),
+      recycleComponents: toPrismaCreateComponent(recycleComponents),
+      components: toPrismaCreateComponent(components),
+    };
+  },
+
+  updateInput(item: Item) {
+    const { id, usedIn, recycleFrom, recycleComponents, components } = item;
+    const { toPrismaUpsertItem, toPrismaDeleteAndUpsertComponent } = itemMapper;
+    return {
+      ...toPrismaUpsertItem(item),
+      usedIn: toPrismaDeleteAndUpsertComponent(id, usedIn),
+      recycleFrom: toPrismaDeleteAndUpsertComponent(id, recycleFrom),
+      recycleComponents: toPrismaDeleteAndUpsertComponent(
+        id,
+        recycleComponents,
+      ),
+      components: toPrismaDeleteAndUpsertComponent(id, components),
     };
   },
 };
