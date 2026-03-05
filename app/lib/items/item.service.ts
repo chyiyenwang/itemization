@@ -1,11 +1,10 @@
 import { inputBuilder } from "./item.persistence";
-import { BaseItemSchema } from "./item.schema";
-import { Item } from "@/app/types";
 import { findUniqueItem, upsertItemRecord } from "./item.repository";
 import { mapApiItemToDomain } from "./item.mapper";
 import { getRequiredStatBlock, isStale } from "./item.helpers";
-
-import * as items from "@/app/data";
+import { validateApiItem } from "./item.validation";
+import { fetchApiItem } from "./item.api";
+import { Item } from "@/app/types";
 
 export async function getItem(id: string): Promise<Item | null> {
   let item = await findUniqueItem(id);
@@ -54,42 +53,4 @@ export default async function upsertItem(ApiDataItem: Item) {
     console.error(`Failed to insert item:`, e);
     return null;
   }
-}
-
-async function fetchApiItem(id: string): Promise<any | null> {
-  // fake API call - find item from local data
-  // return Object.values(items).find((item) => item.id === id);
-
-  const res = await fetch(
-    `https://metaforge.app/api/arc-raiders/items?id=${id}&includeComponents=true`,
-    {
-      cache: "force-cache",
-      next: { revalidate: 60 * 60 },
-    },
-  );
-
-  if (!res.ok) {
-    console.error("Failed to fetch item:", res.statusText);
-    return null;
-  }
-
-  return (await res.json()).data[0];
-}
-
-function validateApiItem(item: any) {
-  const parsed = BaseItemSchema.safeParse(item);
-
-  if (!parsed.success) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error(
-        "Validation errors:",
-        parsed.error.issues.map((issue) => {
-          (issue.message, issue.path);
-        }),
-      );
-    }
-    return null;
-  }
-
-  return parsed.data;
 }
