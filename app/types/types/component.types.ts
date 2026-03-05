@@ -1,13 +1,13 @@
 import { RarityType } from "../core";
 
-export interface Component {
+export type Component = {
   component: {
     id: string;
     name: string;
     icon: string;
     rarity: RarityType;
     itemType: string;
-    description?: string;
+    description: string;
   };
   quantity: number;
-}
+};

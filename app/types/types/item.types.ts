@@ -1,19 +1,15 @@
-import { RarityType } from "../core";
-import { Component } from "./component.types";
+import { Stat, Component, RarityType } from "@/app/types";
 
 export interface Item {
   id: string;
   name: string;
-  description?: string;
+  description: string;
   lootArea: string | null;
   rarity: RarityType;
   icon: string;
   itemType: string;
   value: number;
-  statBlock: {
-    weight: number;
-    stackSize: number;
-  };
+  statBlock?: Stat;
   workbench?: string;
   flavorText?: string;
   subcategory?: string;
