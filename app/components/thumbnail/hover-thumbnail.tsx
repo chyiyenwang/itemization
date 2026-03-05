@@ -1,40 +1,35 @@
 "use client";
 
 import Link from "next/link";
-import Thumbnail from "./thumbnail";
 
 import useTooltip from "@/app/hooks/use-tooltip";
+import paths from "@/app/paths";
 
 import styles from "./thumbnail.module.css";
-import { Component } from "@/app/lib/items/item.types";
+import { Component } from "@/app/types";
 
 interface HoverThumbnailProps {
   data: Component;
+  children: React.ReactNode;
 }
 
-export default function HoverThumbnail({ data }: HoverThumbnailProps) {
-  const {
-    component: { id, rarity, icon: src, itemType: type, name },
-    quantity,
-  } = data;
+export default function HoverThumbnail({
+  data,
+  children,
+}: HoverThumbnailProps) {
+  const { component } = data;
+  const { id } = component;
 
   const { handleEnter, handleLeave } = useTooltip();
 
   return (
     <div className={styles["thumbnail-wrapper"]}>
       <Link
-        href={`/items/${id}`}
-        onMouseEnter={(e) => handleEnter(e.currentTarget, data.component)}
+        href={paths.itemShow(id)}
+        onMouseEnter={(e) => handleEnter(e.currentTarget, component)}
         onMouseLeave={handleLeave}
       >
-        <Thumbnail
-          rarity={rarity}
-          src={src}
-          type={type}
-          alt={name}
-          quantity={quantity}
-          sizes="(max-width: 100px), (max-width: 100px)"
-        />
+        {children}
       </Link>
     </div>
   );

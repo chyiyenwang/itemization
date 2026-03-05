@@ -1,52 +1,56 @@
-import * as z from "zod";
-import { BaseItemSchema } from "./item.schema";
-import type { Item } from "./item.types";
-
-import * as items from "@/app/data";
+import { inputBuilder } from "./item.persistence";
+import { findUniqueItem, upsertItemRecord } from "./item.repository";
+import { mapApiItemToDomain } from "./item.mapper";
+import { getRequiredStatBlock, isStale } from "./item.helpers";
+import { validateApiItem } from "./item.validation";
+import { fetchApiItem } from "./item.api";
+import { Item } from "@/app/types";
 
 export async function getItem(id: string): Promise<Item | null> {
-  // const res = await fetch(
-  //   `https://metaforge.app/api/arc-raiders/items?id=${id}&includeComponents=true`,
-  //   {
-  //     cache: "force-cache",
-  //     next: {
-  //       revalidate: 60 * 60,
-  //     },
-  //   },
-  // );
+  let item = await findUniqueItem(id);
 
-  // if (!res.ok) {
-  //   console.error("Failed to fetch item:", res.statusText);
-  //   return null;
-  // }
+  if (!item || !item.statBlock || isStale(item.lastFetched)) {
+    const itemFromApi = await fetchApiItem(id);
+    if (!itemFromApi) return null;
 
-  // const data = (await res.json()).data[0];
-  // console.log(data);
-  // const parsed = BaseItemSchema.safeParse(data);
-  // console.log(parsed);
-  // if (!parsed.success) {
-  //   console.error(
-  //     "Validation errors:",
-  //     parsed.error.issues.map((issue) => issue.message),
-  //   );
-  //   return null;
-  // }
-  // console.log(parsed.data);
-  // return parsed.data;
-
-  const res = Object.values(items).find((item) => item.id === id);
-  if (!res) return null;
-
-  const parsed = BaseItemSchema.safeParse(res);
-  if (!parsed.success) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error(
-        "Validation errors:",
-        parsed.error.issues.map((issue) => issue.message),
-      );
+    const validatedItem = validateApiItem(itemFromApi);
+    if (!validatedItem) {
+      console.error(`Failed to validate API item data for id ${id}`);
+      return null;
     }
+
+    const normalizedItem = mapApiItemToDomain(validatedItem);
+    item = await upsertItem(normalizedItem);
+  }
+
+  if (!item) {
+    console.error(`Could not fetch or upsert item`);
     return null;
   }
 
-  return parsed.data;
+  const statBlock = getRequiredStatBlock(item.statBlock);
+
+  // TODO: fix this type assertion
+  return {
+    ...item,
+    statBlock,
+  } as Item;
+}
+
+export default async function upsertItem(ApiDataItem: Item) {
+  const { createInput, updateInput } = inputBuilder;
+
+  const createdItem = createInput(ApiDataItem);
+  const updatedItem = updateInput(ApiDataItem);
+
+  try {
+    if (process.env.NODE_ENV !== "production") {
+      console.log("inserting...", ApiDataItem.id);
+    }
+
+    return await upsertItemRecord(ApiDataItem.id, createdItem, updatedItem);
+  } catch (e) {
+    console.error(`Failed to insert item:`, e);
+    return null;
+  }
 }

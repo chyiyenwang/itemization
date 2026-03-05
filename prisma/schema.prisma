@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Item {
+  id          String  @id
+  name        String
+  description String
+  itemType    String
+  // loadout_slots Loadout[]
+  icon        String
+  rarity      String
+  value       Int?
+
+  workbench   String? // TODO: Look into this
+  statBlock   Stat?
+  flavorText  String?
+  subcategory String?
+  shieldType  String?
+  lootArea    String?
+  sources     String? // TODO: Look into this
+  ammoType    String?
+  // locations [] // TODO: Look into this
+  // guide_links [] // TODO: Look into this
+
+  createdAtApi DateTime?
+  updatedAtApi DateTime?
+
+  lastFetched DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  components     ItemComponent[] @relation("ItemComponent")
+  mainComponents ItemComponent[] @relation("MainComponentItemComponent")
+
+  recycleComponents              ItemRecycleComponent[] @relation("RecycleComponent")
+  mainComponentRecycleComponents ItemRecycleComponent[] @relation("MainComponentRecycleComponent")
+
+  recycleFrom         ItemRecycleFrom[] @relation("RecycleFrom")
+  mainItemRecycleFrom ItemRecycleFrom[] @relation("MainItemRecycleFrom")
+
+  usedIn         ItemUsedIn[] @relation("UsedIn")
+  mainItemUsedIn ItemUsedIn[] @relation("MainItemUsedIn")
+
+  @@index([itemType])
+  @@index([rarity])
+}
+
+model Stat {
+  id                            String  @id @default(cuid())
+  itemId                        String  @unique
+  item                          Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  range                         Float   @default(0)
+  damage                        Float   @default(0)
+  health                        Float   @default(0)
+  radius                        Float   @default(0)
+  shield                        Float   @default(0)
+  weight                        Float   @default(0)
+  agility                       Float   @default(0)
+  arcStun                       Float   @default(0)
+  healing                       Float   @default(0)
+  stamina                       Float   @default(0)
+  stealth                       Float   @default(0)
+  useTime                       Float   @default(0)
+  duration                      Float   @default(0)
+  fireRate                      Float   @default(0)
+  stability                     Float   @default(0)
+  stackSize                     Float   @default(0)
+  damageMult                    Float   @default(0)
+  raiderStun                    Float   @default(0)
+  weightLimit                   Float   @default(0)
+  augmentSlots                  Float   @default(0)
+  healingSlots                  Float   @default(0)
+  magazineSize                  Float   @default(0)
+  reducedNoise                  Float   @default(0)
+  shieldCharge                  Float   @default(0)
+  backpackSlots                 Float   @default(0)
+  quickUseSlots                 Float   @default(0)
+  damagePerSecond               Float   @default(0)
+  movementPenalty               Float   @default(0)
+  safePocketSlots               Float   @default(0)
+  damageMitigation              Float   @default(0)
+  healingPerSecond              Float   @default(0)
+  reducedEquipTime              Float   @default(0)
+  staminaPerSecond              Float   @default(0)
+  increasedADSSpeed             Float   @default(0)
+  increasedFireRate             Float   @default(0)
+  reducedReloadTime             Float   @default(0)
+  illuminationRadius            Float   @default(0)
+  increasedEquipTime            Float   @default(0)
+  reducedUnequipTime            Float   @default(0)
+  shieldCompatibility           String?
+  increasedUnequipTime          Float   @default(0)
+  reducedVerticalRecoil         Float   @default(0)
+  increasedBulletVelocity       Float   @default(0)
+  increasedVerticalRecoil       Float   @default(0)
+  reducedMaxShotDispersion      Float   @default(0)
+  reducedPerShotDispersion      Float   @default(0)
+  reducedDurabilityBurnRate     Float   @default(0)
+  reducedRecoilRecoveryTime     Float   @default(0)
+  increasedRecoilRecoveryTime   Float   @default(0)
+  reducedDispersionRecoveryTime Float   @default(0)
+}
+
+model ItemComponent {
+  id          String @id @default(cuid())
+  itemId      String
+  componentId String
+  quantity    Float
+
+  item      Item @relation("ItemComponent", fields: [itemId], references: [id])
+  component Item @relation("MainComponentItemComponent", fields: [componentId], references: [id])
+
+  @@unique([itemId, componentId])
+}
+
+model ItemRecycleComponent {
+  id          String @id @default(cuid())
+  itemId      String
+  componentId String
+  quantity    Float
+
+  item      Item @relation("RecycleComponent", fields: [itemId], references: [id])
+  component Item @relation("MainComponentRecycleComponent", fields: [componentId], references: [id])
+
+  @@unique([itemId, componentId])
+}
+
+model ItemRecycleFrom {
+  id          String @id @default(cuid())
+  itemId      String
+  componentId String
+  quantity    Float
+
+  item      Item @relation("RecycleFrom", fields: [itemId], references: [id])
+  component Item @relation("MainItemRecycleFrom", fields: [componentId], references: [id])
+
+  @@unique([itemId, componentId])
+}
+
+model ItemUsedIn {
+  id          String @id @default(cuid())
+  itemId      String
+  componentId String
+  quantity    Float
+
+  item      Item @relation("UsedIn", fields: [itemId], references: [id])
+  component Item @relation("MainItemUsedIn", fields: [componentId], references: [id])
+
+  @@unique([itemId, componentId])
+}

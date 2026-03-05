@@ -5,17 +5,8 @@ import Badge from "../badge/badge";
 interface ThumbnailProps extends ImageProps {
   rarity: string;
   type: string;
-  quantity?: string | number;
+  quantity: string | number | null;
 }
-
-const iconWrapperStyles = (type: string, rarity: string) => {
-  switch (type) {
-    case "Blueprint":
-      return `url('https://cdn.metaforge.app/arc-raiders/ui/blueprint-bg.webp') center/cover`;
-    default:
-      return `linear-gradient(45deg, var(--rarity-${rarity}-medium), var(--rarity-${rarity}-dark))`;
-  }
-};
 
 export default function Thumbnail({
   rarity,
@@ -32,7 +23,12 @@ export default function Thumbnail({
     >
       <div
         className={styles["image-wrapper"]}
-        style={{ background: iconWrapperStyles(type, rarity) }}
+        style={{
+          background:
+            type === "Blueprint"
+              ? `url('https://cdn.metaforge.app/arc-raiders/ui/blueprint-bg.webp') center/cover`
+              : `linear-gradient(45deg, var(--rarity-${rarity}-medium), var(--rarity-${rarity}-dark))`,
+        }}
       >
         <Image
           src={src}

@@ -1,7 +1,5 @@
-"use client";
-
 import { createContext, RefObject } from "react";
-import { Component } from "../lib/items/item.types";
+import { Component } from "@/app/types";
 
 interface TooltipContextType {
   isOpen: boolean;
