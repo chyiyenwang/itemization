@@ -7,9 +7,10 @@ export function validateApiItem(item: ApiItem) {
     if (process.env.NODE_ENV !== "production") {
       console.error(
         "Validation errors:",
-        parsed.error.issues.map((issue) => {
-          (issue.message, issue.path);
-        }),
+        parsed.error.issues.map((issue) => ({
+          message: issue.message,
+          path: issue.path,
+        })),
       );
     }
     return null;

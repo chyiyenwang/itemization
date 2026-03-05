@@ -11,6 +11,7 @@ export function getRequiredStatBlock(stat: Item["statBlock"] | null) {
 
 const STALE_TIME_DAYS = 7;
 export function isStale(lastFetched: Date) {
+  if (!lastFetched) return true;
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() - STALE_TIME_DAYS);
 

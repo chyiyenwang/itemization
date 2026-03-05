@@ -1,6 +1,7 @@
 import * as items from "@/app/data";
+import { ApiItem } from "./item.schema";
 
-export async function fetchApiItem(id: string): Promise<any | null> {
+export async function fetchApiItem(id: string): Promise<ApiItem | null> {
   // fake API call - find item from local data
   // return Object.values(items).find((item) => item.id === id);
 
@@ -17,5 +18,12 @@ export async function fetchApiItem(id: string): Promise<any | null> {
     return null;
   }
 
-  return (await res.json()).data[0];
+  const json = await res.json();
+
+  if (!json?.data?.length) {
+    console.error("API returned invalid format");
+    return null;
+  }
+
+  return json.data[0];
 }
