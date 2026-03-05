@@ -1,4 +1,4 @@
-import { RarityType } from "../core";
+import { RarityType } from "@/app/types";
 
 export type Component = {
   component: {
