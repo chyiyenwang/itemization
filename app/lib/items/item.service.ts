@@ -16,48 +16,33 @@ function getRequiredStatBlock(stat: Item["statBlock"] | null) {
   );
 }
 
+const STALE_TIME_DAYS = 7;
+function isStale(lastFetched: Date) {
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() - STALE_TIME_DAYS);
+
+  return lastFetched < currentDate ? true : false;
+}
+
 export async function getItem(id: string): Promise<Item | null> {
   let item = await findUniqueItem(id);
 
   if (!item || !item.statBlock || isStale(item.lastFetched)) {
     // real API call to fetch item data, then upsert into DB
-    const res = await fetch(
-      `https://metaforge.app/api/arc-raiders/items?id=${id}&includeComponents=true`,
-      {
-        cache: "force-cache",
-        next: {
-          revalidate: 60 * 60,
-        },
-      },
-    );
-
-    if (!res.ok) {
-      console.error("Failed to fetch item:", res.statusText);
-      return null;
-    }
-
-    const itemFromApi = (await res.json()).data[0];
+    const itemFromApi = await fetchApiItem(id);
+    if (!itemFromApi) return null;
 
     // fake API call - find item from local data
     // const itemFromApi = Object.values(items).find((item) => item.id === id);
 
-    const parsed = BaseItemSchema.safeParse(itemFromApi);
-
-    if (!parsed.success) {
-      if (process.env.NODE_ENV !== "production") {
-        console.error(
-          "Validation errors:",
-          parsed.error.issues.map((issue) => {
-            (issue.message, issue.path);
-          }),
-        );
-      }
+    const validatedItem = validateApiItem(itemFromApi);
+    if (!validatedItem) {
+      console.error(`Failed to validate API item data for id ${id}`);
       return null;
     }
 
-    console.log(parsed.data);
-    const normalized = mapApiItemToDomain(parsed.data);
-    item = await upsertItem(normalized);
+    const normalizedItem = mapApiItemToDomain(validatedItem);
+    item = await upsertItem(normalizedItem);
   }
 
   if (!item) {
@@ -92,10 +77,37 @@ export default async function upsertItem(ApiDataItem: Item) {
   }
 }
 
-const STALE_TIME_DAYS = 7;
-function isStale(lastFetched: Date) {
-  const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() - STALE_TIME_DAYS);
+async function fetchApiItem(id: string): Promise<any | null> {
+  const res = await fetch(
+    `https://metaforge.app/api/arc-raiders/items?id=${id}&includeComponents=true`,
+    {
+      cache: "force-cache",
+      next: { revalidate: 60 * 60 },
+    },
+  );
 
-  return lastFetched < currentDate ? true : false;
+  if (!res.ok) {
+    console.error("Failed to fetch item:", res.statusText);
+    return null;
+  }
+
+  return (await res.json()).data[0];
+}
+
+function validateApiItem(item: any) {
+  const parsed = BaseItemSchema.safeParse(item);
+
+  if (!parsed.success) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error(
+        "Validation errors:",
+        parsed.error.issues.map((issue) => {
+          (issue.message, issue.path);
+        }),
+      );
+    }
+    return null;
+  }
+
+  return parsed.data;
 }
