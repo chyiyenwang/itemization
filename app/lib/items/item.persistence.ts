@@ -125,7 +125,7 @@ const itemMapper = {
   },
 };
 
-export const itemBuilder = {
+export const inputBuilder = {
   createInput(item: Item) {
     const { usedIn, recycleFrom, recycleComponents, components } = item;
     const { toPrismaCreateItem, toPrismaCreateComponent } = itemMapper;
