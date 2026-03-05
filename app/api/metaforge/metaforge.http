@@ -1,0 +1,2 @@
+GET https://metaforge.app/api/arc-raiders/items?minimal=true&search=
+content-type: application/json
