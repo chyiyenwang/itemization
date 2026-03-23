@@ -2,6 +2,8 @@ import { prisma } from "@/app/lib/prisma";
 import { Prisma } from "@/generated/prisma/client";
 
 export async function findUniqueItem(id: string) {
+  if (!id) return null;
+
   return await prisma.item.findUnique({
     where: { id },
     include: {
@@ -19,6 +21,8 @@ export async function upsertItemRecord(
   createData: Prisma.ItemCreateInput,
   updateData: Prisma.ItemUpdateInput,
 ) {
+  if (!id) return null;
+
   return await prisma.item.upsert({
     where: { id },
     create: createData,
@@ -47,3 +51,17 @@ const includeComponentDetails = {
     },
   },
 };
+
+export async function findAllItemNames(term: string) {
+  if (!term) return [];
+
+  return await prisma.item.findMany({
+    where: {
+      name: { contains: term },
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+}

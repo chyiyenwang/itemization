@@ -1,5 +1,9 @@
 import { inputBuilder } from "./item.persistence";
-import { findUniqueItem, upsertItemRecord } from "./item.repository";
+import {
+  findUniqueItem,
+  upsertItemRecord,
+  findAllItemNames,
+} from "./item.repository";
 import { mapApiItemToDomain } from "./item.mapper";
 import { getRequiredStatBlock, isStale } from "./item.helpers";
 import { validateApiItem } from "./item.validation";
@@ -37,7 +41,7 @@ export async function getItem(id: string): Promise<Item | null> {
   } as Item;
 }
 
-export default async function upsertItem(ApiDataItem: Item) {
+export async function upsertItem(ApiDataItem: Item) {
   const { createInput, updateInput } = inputBuilder;
 
   const createdItem = createInput(ApiDataItem);
@@ -53,4 +57,15 @@ export default async function upsertItem(ApiDataItem: Item) {
     console.error(`Failed to insert item:`, e);
     return null;
   }
+}
+
+export async function getItemNames(term: string) {
+  const res = await findAllItemNames(term);
+
+  if (!res) {
+    console.error("No items found");
+    return [];
+  }
+
+  return res;
 }
