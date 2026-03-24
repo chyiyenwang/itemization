@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "lint:css": "stylelint 'app/**/*.css'",
     "lint:css:fix": "stylelint 'app/**/*.css' --fix",
+    "postinstall": "prisma generate",
     "format": "prettier --write 'app/**/*.{js,ts,jsx,tsx,css}'",
     "prepare": "husky"
   },
