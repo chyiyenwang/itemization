@@ -13,7 +13,7 @@ interface CardProps {
   area: string | null;
   value: number;
   weight: number;
-  stackSize: number;
+  stackSize?: number;
 }
 
 export default function Card({
@@ -25,7 +25,6 @@ export default function Card({
   area,
   value,
   weight,
-  stackSize,
 }: CardProps) {
   return (
     <div className={styles.card}>
