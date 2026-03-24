@@ -3,7 +3,7 @@ const paths = {
     return "/";
   },
   itemShow(id: string) {
-    return `/items/${id}`;
+    return `/${id}`;
   },
 };
 
