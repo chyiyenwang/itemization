@@ -43,8 +43,8 @@ export default async function ItemPage({ params }: ItemPageProps) {
             type={item.itemType}
             area={item.lootArea}
             value={item.value}
-            weight={item.statBlock.weight}
-            stackSize={item.statBlock.stackSize}
+            weight={item.statBlock?.weight}
+            stackSize={item.statBlock?.stackSize}
           />
         </div>
 

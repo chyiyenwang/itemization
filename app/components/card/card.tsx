@@ -12,7 +12,7 @@ interface CardProps {
   type: string;
   area: string | null;
   value: number;
-  weight: number;
+  weight?: number;
   stackSize?: number;
 }
 

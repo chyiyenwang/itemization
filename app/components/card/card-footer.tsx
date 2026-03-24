@@ -3,7 +3,7 @@ import RaiderCoin from "@/public/raider-coin.webp";
 import styles from "./card.module.css";
 
 interface CardFooterProps {
-  weight: number;
+  weight?: number;
   value: number;
 }
 
