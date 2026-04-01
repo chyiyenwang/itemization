@@ -73,6 +73,7 @@ const itemMapper = {
       lootArea: item.lootArea,
       sources: item.sources,
       ammoType: item.ammoType,
+      lastFetched: new Date(),
     };
   },
 

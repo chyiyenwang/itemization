@@ -2,11 +2,11 @@ import HoverThumbnail from "./hover-thumbnail";
 import { Component } from "@/app/types";
 import Thumbnail from "./thumbnail";
 
-interface ThumbnailListProps {
+interface HoverThumbnailListProps {
   data: Component[];
 }
 
-export default function ThumbnailList({ data }: ThumbnailListProps) {
+export default function HoverThumbnailList({ data }: HoverThumbnailListProps) {
   return (
     <>
       {[...data]

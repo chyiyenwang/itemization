@@ -3,7 +3,7 @@ import { Card } from "@/app/components/card";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import Accordion from "@/app/components/accordion/accordion";
-import ThumbnailList from "@/app/components/thumbnail/thumbnail-list";
+import HoverThumbnailList from "@/app/components/thumbnail/hover-thumbnail-list";
 import TooltipProvider from "@/app/providers/tooltip-provider";
 
 interface ItemPageProps {
@@ -24,12 +24,12 @@ export default async function ItemPage({ params }: ItemPageProps) {
         <div className={styles.left}>
           <Accordion header="COMPONENTS" count={item.components?.length}>
             <div className={styles.components}>
-              {item.components && <ThumbnailList data={item.components} />}
+              {item.components && <HoverThumbnailList data={item.components} />}
             </div>
           </Accordion>
           <Accordion header="USED IN" count={item.usedIn?.length}>
             <div className={styles["used-in"]}>
-              {item.usedIn && <ThumbnailList data={item.usedIn} />}
+              {item.usedIn && <HoverThumbnailList data={item.usedIn} />}
             </div>
           </Accordion>
         </div>
@@ -56,7 +56,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
           >
             <div className={styles["recycle-components"]}>
               {item.recycleComponents && (
-                <ThumbnailList data={item.recycleComponents} />
+                <HoverThumbnailList data={item.recycleComponents} />
               )}
             </div>
           </Accordion>
@@ -66,7 +66,9 @@ export default async function ItemPage({ params }: ItemPageProps) {
             direction="right"
           >
             <div className={styles["recycle-from"]}>
-              {item.recycleFrom && <ThumbnailList data={item.recycleFrom} />}
+              {item.recycleFrom && (
+                <HoverThumbnailList data={item.recycleFrom} />
+              )}
             </div>
           </Accordion>
         </div>
