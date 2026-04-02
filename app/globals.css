@@ -1,6 +1,6 @@
 :root {
-  --background: #fff;
-  --foreground: #171717;
+  --background: rgb(16 25 34);
+  --foreground: #ededed;
 
   /* Text */
   --text-primary: #171717;
@@ -48,13 +48,6 @@
   --timing-normal: 200ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: rgb(16 25 34);
-    --foreground: #ededed;
-  }
-}
-
 html,
 body {
   height: 100%;
@@ -80,10 +73,4 @@ body {
 a {
   text-decoration: none;
   color: inherit;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
